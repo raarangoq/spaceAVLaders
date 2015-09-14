@@ -17,7 +17,7 @@ function GUI(){
 	this.upScore = upScore;
 
 
-	this.pauseGame();
+//	this.pauseGame();
 
 
 	this.pauseKey = keyboard.addKey(Phaser.Keyboard.ENTER);
