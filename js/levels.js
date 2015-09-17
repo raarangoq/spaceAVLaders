@@ -15,12 +15,21 @@ var enemyBullets;
 var stateText;
 var livingEnemies = [];
 
+var id = 0;
 
+
+var tree;
 var gui;
+
+
+
+var text;
 
 levels = {
     create: function() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
+
+    tree = new AVLTree();
 
     addKeyboard();
 
@@ -31,8 +40,7 @@ levels = {
     addPlayer();
 
     //  The baddies!
-    addAliens();
-    aliens.createAliens();
+    this.addAliens();
 
 
     gui = new GUI();
@@ -48,12 +56,9 @@ levels = {
     explosions.createMultiple(30, 'kaboom');
     explosions.forEach(this.setupInvader, this);
     
-    },
 
-    setupInvader: function(invader) {
-        invader.anchor.x = 0.5;
-        invader.anchor.y = 0.5;
-        invader.animations.add('kaboom');
+text = game.add.text(20, 540, 'Cargando...', { fontSize: '28px', fill: '#ffffff'});
+
 
     },
 
@@ -65,49 +70,24 @@ levels = {
         if (player.alive)
         {
             player.updatePlayer();
-            aliens.updateAliens();
+            //aliens.updateAliens();
 
             //  Run collision
-            game.physics.arcade.overlap(bullets, aliens, this.collisionHandler, null, this);
+
             game.physics.arcade.overlap(enemyBullets, player, this.enemyHitsPlayer, null, this);
+            tree.updateTree();
         }
 
     },
 
-    render: function() {
-
-        // for (var i = 0; i < aliens.length; i++)
-        // {
-        //     game.debug.body(aliens.children[i]);
-        // }
-
-    },
-
-    collisionHandler: function(bullet, alien) {
-
-        //  When a bullet hits an alien we kill them both
-        bullet.kill();
-        alien.kill();
-
-        //  Increase the score
-        gui.upScore(20);
-
-        //  And create an explosion :)
-        var explosion = explosions.getFirstExists(false);
-        explosion.reset(alien.body.x, alien.body.y);
-        explosion.play('kaboom', 30, false, true);
-
-        if (aliens.countLiving() == 0)
-        {
-            gui.upScore(1000);
-
-            enemyBullets.callAll('kill',this);
-            stateText.text = " You Won, \n Click to restart";
-            stateText.visible = true;
-
-            //the "click to restart" handler
-            game.input.onTap.addOnce(this.restart,this);
+    addAliens: function(){
+        
+        
+        for(var i=0;i<15; i++){
+            var alien = addDrone(400, 30, i);
+            tree.insert(alien);
         }
+        tree.reorderTree();
 
     },
 
@@ -133,7 +113,7 @@ levels = {
             player.kill();
             enemyBullets.callAll('kill');
 
-            stateText.text=" GAME OVER \n Click to restart";
+            stateText.text = " GAME OVER \n Click to restart";
             stateText.visible = true;
 
             //the "click to restart" handler
@@ -142,6 +122,14 @@ levels = {
 
     },
 
+    render: function() {
+
+        // for (var i = 0; i < aliens.length; i++)
+        // {
+        //     game.debug.body(aliens.children[i]);
+        // }
+
+    },
 
     resetBullet: function(bullet) {
 
@@ -157,14 +145,27 @@ levels = {
         //resets the life count
         lives.callAll('revive');
         //  And brings the aliens back from the dead :)
-        aliens.removeAll();
-        aliens.createAliens();
+    //    aliens.removeAll();
+    //    aliens.createAliens();
 
         //revives the player
         player.revive();
         //hides the text
         stateText.visible = false;
 
-    }
+        tree.update();
+
+    },
+
+
+// Establecer la explosión
+    setupInvader: function(invader) {
+        invader.anchor.x = 0.5;
+        invader.anchor.y = 0.5;
+        invader.animations.add('kaboom');
+
+    },
+
+    
 
 }

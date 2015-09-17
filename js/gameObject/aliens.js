@@ -1,56 +1,56 @@
 
 
 
-function addAliens(){
-	aliens = game.add.group();
-    aliens.enableBody = true;
-    aliens.physicsBodyType = Phaser.Physics.ARCADE;
+function addDrone(x, y, i){
 
-    aliens.firingTimer = 0;
+    var drone = game.add.sprite(x, y, 'invader');
+    drone.anchor.setTo(0.5, 0.5);
+    game.physics.enable(drone, Phaser.Physics.ARCADE);
+    drone.body.colliderWorldBounds = true;
 
-    addAliensBullets();
+    drone.firingTimer = 0;
+    drone.id = i;
 
-    aliens.createAliens = createAliens;
-    aliens.descend = descend;
-    aliens.enemyFires = enemyFires;
-    aliens.updateAliens = updateAliens;
+    drone.health = 100;
+    drone.speed = 100;
+
+
+    drone.x_target = 0;
+    drone.y_target = 0;
+
+    drone.updateAlien = updateAlien;
+    drone.setTarget = setTarget;
+    drone.alienTakeDamage = alienTakeDamage;
+
+    addDroneAnimations(drone);
+
+    return drone;
+}
+
+function addDroneAnimations(drone){
+    drone.animations.add('fly', [ 0, 1, 2, 3 ], 20, true);
+    drone.play('fly');
+}
+
+function updateAlien(){
+    if( game.physics.arcade.distanceToXY(this,this.x_target, this.y_target) < 5 ) 
+        this.body.velocity.setTo(0,0);
+
+}
+
+function setTarget(x, y){
+    this.x_target = x;
+    this.y_target = y;
+
+    game.physics.arcade.moveToXY(this, x, y, this.speed);
+}   
+
+function alienTakeDamage(damage){
+    this.health -= damage;
 }
 
 
-function createAliens() {
-    for (var y = 0; y < 4; y++)
-    {
-        for (var x = 0; x < 10; x++)
-        {
-            var alien = this.create(x * 48, y * 50, 'invader');
-            alien.anchor.setTo(0.5, 0.5);
-            alien.animations.add('fly', [ 0, 1, 2, 3 ], 20, true);
-            alien.play('fly');
-            alien.body.moves = false;
-        }
-    }
-    this.x = 100;
-    this.y = 50;
 
-    //  All this does is basically start the invaders moving. Notice we're moving the Group they belong to, rather than the invaders directly.
-    var tween = game.add.tween(this).to( { x: 200 }, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true);
 
-    //  When the tween loops it calls descend
-    tween.onLoop.add(this.descend, this);
-}
 
-function descend() {
-    aliens.y += 10;
-}
 
-function enemyFires() {
-	enemyBullets.fireAlienBuller();
-   
-}
-
-function updateAliens(){
-	if (game.time.now > this.firingTimer)
-    {
-        this.enemyFires();
-    }
-}

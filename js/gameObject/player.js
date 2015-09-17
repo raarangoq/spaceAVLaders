@@ -28,11 +28,11 @@ function updatePlayer(){
         //  Reset the player, then check for movement keys
         player.body.velocity.setTo(0, 0);
 
-        if ( keyboard.leftKey() )
+        if ( keyboard.leftKey() && player.body.x>50)
         {
             player.body.velocity.x = -200;
         }
-        else if ( keyboard.rightKey() )
+        else if ( keyboard.rightKey() && player.body.x<730)
         {
             player.body.velocity.x = 200;
         }

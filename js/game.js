@@ -3,7 +3,9 @@ var game = new Phaser.Game(800, 600, Phaser.AUTO, '');
 
 game.global = {
 	level : 1,
-	is_playing : false
+	is_playing : false,
+	lives : 3,
+	health : 100
 }
 
 game.state.add('loading', loading, true);

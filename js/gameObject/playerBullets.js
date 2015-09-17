@@ -13,6 +13,9 @@ function addBullets(){
     bullets.setAll('checkWorldBounds', true);
 
     bullets.bulletTime = 0;
+    bullets.timeBetweenFires = 500;
+
+    bullets.damage = 50;
 
 
     bullets.fireBullet = fireBullet;
@@ -27,6 +30,6 @@ function fireBullet(){
         //  And fire it
         bullet.reset(player.x, player.y + 8);
         bullet.body.velocity.y = -400;
-        this.bulletTime = game.time.now + 200;
+        this.bulletTime = game.time.now + this.timeBetweenFires;
     }
 }
