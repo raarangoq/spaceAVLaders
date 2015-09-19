@@ -13,9 +13,9 @@ function addBullets(){
     bullets.setAll('checkWorldBounds', true);
 
     bullets.bulletTime = 0;
-    bullets.timeBetweenFires = 500;
+    bullets.timeBetweenFires = 200;
 
-    bullets.damage = 50;
+    bullets.damage = 100;
 
 
     bullets.fireBullet = fireBullet;

@@ -6,46 +6,42 @@ function AVLTree(){
 	this.root = null;
 
 	this.alienToDestroy = null;
+	timeToMove = game.time.time;
+	this.direction = "right";
+	this.vector = [];
+
+
 
 	this.updateTree = updateTree;
-
 	this.insert = insert;
 	this.insertToTree = insertToTree;
 	this.rotateWithLeftChild = rotateWithLeftChild;
 	this.rotateWithRightChild = rotateWithRightChild;
 	this.doubleWithLeftChild = doubleWithLeftChild;
 	this.doubleWithRightChild = doubleWithRightChild;
-
-	this.direction = "right";
-
 	this.deleteNode = deleteNode;
 	this.deleteFromTree = deleteFromTree;
 	this.findUp = findUp;
 	this.adjustment = adjustment;
 
+
 	this.reorderTree = reorderTree;
 
-	timeToMove = game.time.time;
+	
 
-//	this.imprimir = imprimir;
-//	this.imprimirXAltura = imprimirXAltura;
+	this.imprimir = imprimir;
+	this.imprimirXAltura = imprimirXAltura;
 }
 
 var timeToMove;
 
 function updateTree(){
+//text.text = this.vector.length;	
+
 	if(tree.root == null)
 		return;
 
-
-	this.root.updateNode();
-
-text.text = this.root.alien.id;	
-
-	if(game.time.time - timeToMove > 3000)
-		this.direction = this.root.setRootDirection(this.direction);
-
-
+	this.root.setRootDirection();
 	if(	this.alienToDestroy != null ){		
 		this.deleteNode(this.alienToDestroy);
      
@@ -62,6 +58,15 @@ text.text = this.root.alien.id;
 
 		this.reorderTree();	    
 	}
+
+	text.text = "";
+
+	for (var i=0; i<this.vector.length; i++){
+		this.vector[i].updateNode();
+	}
+
+this.imprimir();
+		
 }
 
 
@@ -86,6 +91,13 @@ function adjustment(father, son, ancestor){
 
 function deleteFromTree(node, alien){
 	if( node.alien.id == alien.id ){
+
+var i=0;
+while ( node.alien.id != this.vector[i].alien.id)
+	i++;
+this.vector.splice(i, 1);
+
+
 		if(node.leftNode == null && node.rightNode == null ){
 			node = null;
 			return node;
@@ -170,13 +182,18 @@ function height( t ){
 }
 
 function insert( alien ){
+		
 	this.root = this.insertToTree(alien, this.root);
+
+	return alien;
 }
 
 
 function insertToTree(alien, t){
-	if( t == null )
+	if( t == null ){
 		t = new AVLNode(alien, null, null);
+this.vector[this.vector.length] = t;
+	}
 	else if( alien.id < t.alien.id ){
 		t.leftNode = this.insertToTree(alien, t.leftNode);
 		if( height(t.leftNode) - height(t.rightNode) == 2 ){
@@ -212,7 +229,7 @@ function reorderTree(){
 }
 
 function rotateWithLeftChild( k2 ){
-	var k1 = k2;
+	var k1 = k2.leftNode;
 	k2.leftNode = k1.rightNode;
 	k1.rightNode = k2;
 	k2.heightNode = Math.max( height(k2.leftNode), height(k2.rightNode) ) + 1;
@@ -232,7 +249,7 @@ function rotateWithRightChild( k1 ){
 }
 
 
-/*
+
 function imprimir(){
 	this.imprimirXAltura( this.root );
 }
@@ -240,9 +257,19 @@ function imprimir(){
 
 function imprimirXAltura( nodo ){
 	if(nodo != null){
-		imprimirXAltura(nodo.rightNode);
-		text.text = text.text + " " + (height(this.root) - height(nodo)) + "[" + nodo.alien.id + "]; ";
 		imprimirXAltura(nodo.leftNode);
+
+text.text += "{";
+if(nodo.leftNode != null)
+	text.text += nodo.leftNode.alien.id + "-";
+
+text.text += "[" + nodo.alien.id + "/" + nodo.heightNode + "]";
+
+if(nodo.rightNode != null)
+	text.text += "-" + nodo.rightNode.alien.id;
+
+text.text += "}";
+
+		imprimirXAltura(nodo.rightNode);
 	}
 }
-*/

@@ -13,7 +13,7 @@ function create(){
 	text.fixedToCamera = true;
 
 	var tree = new AVLTree();
-	for(var i=0;i<10; i++){
+	for(var i=0;i<7; i++){
 		var t = new alien(i);
 		tree.insert(t);
 	}
@@ -21,9 +21,9 @@ function create(){
 	alert(text.text);
 
 	var borrar = new alien(0);
-	tree.borrar(borrar);
+	tree.deleteNode(borrar);
 	borrar = new alien(2);
-	tree.borrar(borrar);
+	tree.deleteNode(borrar);
 	//borrar = new alien(1);
 	//tree.borrar(borrar);
 

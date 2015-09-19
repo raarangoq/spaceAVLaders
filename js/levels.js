@@ -81,8 +81,6 @@ text = game.add.text(20, 540, 'Cargando...', { fontSize: '28px', fill: '#ffffff'
     },
 
     addAliens: function(){
-        
-        
         for(var i=0;i<15; i++){
             var alien = addDrone(400, 30, i);
             tree.insert(alien);
