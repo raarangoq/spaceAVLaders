@@ -12,11 +12,11 @@ function addAliensBullets(){
     enemyBullets.setAll('outOfBoundsKill', true);
     enemyBullets.setAll('checkWorldBounds', true);
 
-    enemyBullets.fireAlienBuller = fireAlienBuller;
+    enemyBullets.fireAlienBullet = fireAlienBullet;
 }
 
 
-function fireAlienBuller(){
+function fireAlienBullet(){
 	 //  Grab the first bullet we can from the pool
     enemyBullet = this.getFirstExists(false);
     livingEnemies.length=0;

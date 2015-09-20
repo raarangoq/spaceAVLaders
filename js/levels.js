@@ -57,7 +57,7 @@ levels = {
     explosions.forEach(this.setupInvader, this);
     
 
-text = game.add.text(20, 540, 'Cargando...', { fontSize: '28px', fill: '#ffffff'});
+text = game.add.text(20, 540, 'Cargando...', { fontSize: '16px', fill: '#ffffff'});
 
 
     },

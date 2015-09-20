@@ -22,15 +22,15 @@ function AVLNode(alien, leftAlien, rightAlien){
 }
 
 function updateNode(){
-	//if( this.leftNode != null )
-	//	this.leftNode.updateNode();
+	if( this.leftNode != null )
+		this.leftNode.updateNode();
 
 	this.alien.updateAlien();
 	game.physics.arcade.overlap(bullets, this.alien, this.setAlienToDestroy); 
 
 		
-	//if( this.rightNode != null )
-	//	this.rightNode.updateNode();
+	if( this.rightNode != null )
+		this.rightNode.updateNode();
 } 
 
 

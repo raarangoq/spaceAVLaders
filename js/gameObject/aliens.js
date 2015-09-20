@@ -1,48 +1,45 @@
 
 
 
-function addDrone(x, y, i){
+function addAlien(x, y, i){
 
-    var drone = game.add.sprite(x, y, 'invader');
-    drone.anchor.setTo(0.5, 0.5);
-    game.physics.enable(drone, Phaser.Physics.ARCADE);
-    drone.body.colliderWorldBounds = true;
+    var alien = game.add.sprite(x, y, 'invader');
+    game.physics.enable(alien, Phaser.Physics.ARCADE);
+    alien.body.colliderWorldBounds = true;
 
-    drone.firingTimer = 0;
-    drone.id = i;
+    alien.firingTimer = 0;
+    alien.id = i;
 
-    drone.health = 100;
-    drone.speed = 100;
+    alien.health = 100;
+    alien.speed = 5000;
 
+    alien.x_target = 0;
+    alien.y_target = 0;
 
-    drone.x_target = 0;
-    drone.y_target = 0;
+    alien.updateAlien = updateAlien;
+    alien.setTarget = setTarget;
+    alien.alienTakeDamage = alienTakeDamage;
 
-    drone.updateAlien = updateAlien;
-    drone.setTarget = setTarget;
-    drone.alienTakeDamage = alienTakeDamage;
-
-    addDroneAnimations(drone);
-
-    return drone;
-}
-
-function addDroneAnimations(drone){
-    drone.animations.add('fly', [ 0, 1, 2, 3 ], 20, true);
-    drone.play('fly');
+    return alien;
 }
 
 function updateAlien(){
     if( game.physics.arcade.distanceToXY(this,this.x_target, this.y_target) < 5 ) 
         this.body.velocity.setTo(0,0);
-
 }
 
 function setTarget(x, y){
     this.x_target = x;
     this.y_target = y;
 
-    game.physics.arcade.moveToXY(this, x, y, this.speed);
+    var distance = this.speed * ( 
+        game.physics.arcade.distanceToXY(
+            tree.root.alien, 
+            tree.root.alien.x_target, 
+            tree.root.alien.y_target) / 800);
+
+
+    game.physics.arcade.moveToXY(this, x, y, null, 3000);
 }   
 
 function alienTakeDamage(damage){

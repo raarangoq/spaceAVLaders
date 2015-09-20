@@ -8,7 +8,6 @@ function AVLTree(){
 	this.alienToDestroy = null;
 	timeToMove = game.time.time;
 	this.direction = "right";
-	this.vector = [];
 
 
 
@@ -22,7 +21,8 @@ function AVLTree(){
 	this.deleteNode = deleteNode;
 	this.deleteFromTree = deleteFromTree;
 	this.findUp = findUp;
-	this.adjustment = adjustment;
+	this.toRotate = toRotate;
+	this.setHeightNode = setHeightNode;
 
 
 	this.reorderTree = reorderTree;
@@ -40,6 +40,7 @@ function updateTree(){
 
 	if(tree.root == null)
 		return;
+	this.root.updateNode();
 
 	this.root.setRootDirection();
 	if(	this.alienToDestroy != null ){		
@@ -61,97 +62,83 @@ function updateTree(){
 
 	text.text = "";
 
-	for (var i=0; i<this.vector.length; i++){
-		this.vector[i].updateNode();
-	}
-
 this.imprimir();
 		
 }
 
 
-function adjustment(father, son, ancestor){
-	if(son.rightNode == null){
-		if(father.alien.id == ancestor.alien.id){
-			father.leftNode = son.leftNode;
-			return father;
-		}
-		father.rightNode = son.leftNode;
-		return father;
-	}
-
-	son = this.adjustment(son, son.rightNode, ancestor);
-
-	if(father.alien.id == ancestor.alien.id)
-		father.leftNode = son;
+function toRotate(node){
+if( height(node.leftNode) - height(node.rightNode) == 2){
+	if( height(node.leftNode.leftNode) >= height(node.leftNode.rightNode) )
+		node = this.rotateWithLeftChild( node );
 	else
-		father.rightNode = son;
-	return father;
+		node = this.doubleWithLeftChild( node );
+	}
+else if( height(node.rightNode) - height(node.leftNode) == 2){		
+	if( height(node.rightNode.rightNode) >= height(node.rightNode.leftNode) )
+		node = this.rotateWithRightChild( node );
+	else
+		node = this.doubleWithRightChild( node );
+}
+this.setHeightNode(node);
+
+return node;
+}
+
+function findUp(node, father){
+	if( node.rightNode == null ){
+		if(father.rightNode.alien.id == node.alien.id){
+			father.rightNode = null;
+			this.setHeightNode(father);
+		}
+		return node;
+		
+	}
+	return this.findUp(node.rightNode, node);
 }
 
 function deleteFromTree(node, alien){
 	if( node.alien.id == alien.id ){
-
-var i=0;
-while ( node.alien.id != this.vector[i].alien.id)
-	i++;
-this.vector.splice(i, 1);
-
-
 		if(node.leftNode == null && node.rightNode == null ){
 			node = null;
-			return node;
 		}
-		if(node.rightNode == null){
+		else if(node.rightNode == null){
 			node = node.leftNode;
-			return node;
 		}
-		if(node.leftNode == null){
+		else if(node.leftNode == null){
 			node = node.rightNode;
-			return node;
 		}
+		else{
+			var temp = this.findUp(node.leftNode, node);
+			if (temp.alien.id != node.leftNode.alien.id)
+				temp.leftNode = node.leftNode;
+			temp.rightNode = node.rightNode;
+			this.setHeightNode(temp);
+			node = temp;
 
-		node.alien = this.findUp(node.leftNode);
-		node = this.adjustment(node, node.leftNode, node);
-		return node;
+			node = toRotate(node);
+		}
 	}
-
-	if(alien.id > node.alien.id){
+	else if(alien.id > node.alien.id){
 		node.rightNode = this.deleteFromTree(node.rightNode, alien);
 
-
-		if( height(node.leftNode) - height(node.rightNode) == 2){
-			if( height(node.leftNode.leftNode) >= height(node.leftNode.rightNode) )
-				node = this.rotateWithLeftChild( node );
-			else
-				node = this.doubleWithLeftChild( node );
-		}
-		node.heightNode = Math.max( 
-			height(node.leftNode),
-			height(node.rightNode) 
-		) + 1;
-
-
-		return node;
+		node = toRotate(node);
+		this.setHeightNode(node);
 	}
 	else{
 		node.leftNode = this.deleteFromTree(node.leftNode, alien);
 
+		node = toRotate(node);
+		this.setHeightNode(node);
+	}
+	return node;
+}
 
-		if( height(node.rightNode) - height(node.leftNode) == 2){
-			if( height(node.rightNode.rightNode) >= height(node.rightNode.leftNode) )
-				node = this.rotateWithRightChild( node );
-			else
-				node = this.doubleWithRightChild( node );
-		}
-		node.heightNode = Math.max( 
+function setHeightNode(node){
+	node.heightNode = Math.max( 
 			height(node.leftNode),
 			height(node.rightNode) 
 		) + 1;
-
-
-		return node;
-	}
 }
 
 function deleteNode(alien){
@@ -164,15 +151,10 @@ function doubleWithLeftChild( k3 ){
 }
 
 function doubleWithRightChild( k1 ){
-	k1.rightNode = this.rotateWithLeftChild( k1.leftNode );
+	k1.rightNode = this.rotateWithLeftChild( k1.rightNode );
 	return rotateWithRightChild( k1 );
 }
 
-function findUp(node){
-	if( node.rightNode == null )
-		return node.alien;
-	return this.findUp(node.rightNode);
-}
 
 function height( t ){
 	if( t == null )
@@ -182,9 +164,7 @@ function height( t ){
 }
 
 function insert( alien ){
-		
 	this.root = this.insertToTree(alien, this.root);
-
 	return alien;
 }
 
@@ -192,7 +172,6 @@ function insert( alien ){
 function insertToTree(alien, t){
 	if( t == null ){
 		t = new AVLNode(alien, null, null);
-this.vector[this.vector.length] = t;
 	}
 	else if( alien.id < t.alien.id ){
 		t.leftNode = this.insertToTree(alien, t.leftNode);
