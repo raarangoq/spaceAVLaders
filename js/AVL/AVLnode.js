@@ -12,12 +12,13 @@ function AVLNode(alien, leftAlien, rightAlien){
 	this.heightNode = 0;
 
 	this.x_node = 400;
-	this.y_node = 150;
+	this.y_node = 300;
 
 	this.reorderNode = reorderNode;
 	this.setRootDirection = setRootDirection;
 	this.updateNode = updateNode;
 	this.setAlienToDestroy = setAlienToDestroy;
+	this.setAlienToDestroyWithTorpedo = setAlienToDestroyWithTorpedo;
 
 }
 
@@ -28,6 +29,9 @@ function updateNode(){
 	this.alien.updateAlien();
 	game.physics.arcade.overlap(bullets, this.alien, this.setAlienToDestroy); 
 
+	if ( torpedo != null ){
+		game.physics.arcade.overlap(this.alien, torpedo, this.setAlienToDestroyWithTorpedo); 		
+	}
 		
 	if( this.rightNode != null )
 		this.rightNode.updateNode();
@@ -48,7 +52,6 @@ function reorderNode(x, y, height){
 }
 
 function setAlienToDestroy(alien, bullet){	
-//alert(alien.id);
 	alien.alienTakeDamage(bullets.damage);
 	bullet.kill();
 	
@@ -58,10 +61,20 @@ function setAlienToDestroy(alien, bullet){
 	
 }
 
+function setAlienToDestroyWithTorpedo(alien, torpedo){	
+
+	alien.alienTakeDamage(torpedo.damage);
+	torpedo.destroy();
+	torpedo = null;
+
+	if(alien.health <= 0)
+		tree.alienToDestroy = alien;	
+	
+}
+
 function setRootDirection(){
 
 	if( game.physics.arcade.distanceToXY(this.alien, this.x_node, this.y_node) < 5 ){
-
 		if(tree.direction == "right"){
 			tree.direction = "left";
 			this.x_node = 50 + limit[this.heightNode];
@@ -70,9 +83,10 @@ function setRootDirection(){
 			tree.direction = "right";
 			this.x_node = 750 - limit[this.heightNode];
 		}
-		this.y_node = this.y_node + 40;
+		this.y_node = 30 + 40 * this.heightNode;
 
 		this.reorderNode(this.x_node, this.y_node, this.heightNode);
+
 	}
 
 }

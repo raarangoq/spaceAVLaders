@@ -8,7 +8,10 @@ function AVLTree(){
 	this.alienToDestroy = null;
 	timeToMove = game.time.time;
 	this.direction = "right";
-
+	this.timeToTarget = 4000;
+	this.SPEED = 8000;
+	this.nextId = 0;
+	this.idArray = [];
 
 
 	this.updateTree = updateTree;
@@ -23,51 +26,57 @@ function AVLTree(){
 	this.findUp = findUp;
 	this.toRotate = toRotate;
 	this.setHeightNode = setHeightNode;
-
-
 	this.reorderTree = reorderTree;
 
+	this.createAlien = createAlien;
 	
 
 	this.imprimir = imprimir;
 	this.imprimirXAltura = imprimirXAltura;
+
+	createTree(this);
+
 }
 
-var timeToMove;
+function createTree(tree){
+	for(var i=0; i<256; i++){
+		tree.idArray[i] = i;
+	}
+}
+
 
 function updateTree(){
-//text.text = this.vector.length;	
 
 	if(tree.root == null)
 		return;
 	this.root.updateNode();
 
 	this.root.setRootDirection();
-	if(	this.alienToDestroy != null ){		
+
+	if(	this.alienToDestroy != null ){	
+
 		this.deleteNode(this.alienToDestroy);
      
-	    //  Increase the score
-	    gui.upScore(20);
-
 	    //  And create an explosion :)
 	    var explosion = explosions.getFirstExists(false);
 	    explosion.reset(this.alienToDestroy.body.x, this.alienToDestroy.body.y);
 	    explosion.play('kaboom', 30, false, true);
 
-	    this.alienToDestroy.destroy();
+	    this.alienToDestroy.destroyAlien();
 	    this.alienToDestroy = null;
 
 		this.reorderTree();	    
+
 	}
 
-	text.text = "";
-
-this.imprimir();
 		
 }
 
 
 function toRotate(node){
+if (node == null)
+	return node;
+
 if( height(node.leftNode) - height(node.rightNode) == 2){
 	if( height(node.leftNode.leftNode) >= height(node.leftNode.rightNode) )
 		node = this.rotateWithLeftChild( node );
@@ -88,11 +97,10 @@ return node;
 function findUp(node, father){
 	if( node.rightNode == null ){
 		if(father.rightNode.alien.id == node.alien.id){
-			father.rightNode = null;
+			father.rightNode = node.leftNode;
 			this.setHeightNode(father);
 		}
 		return node;
-		
 	}
 	return this.findUp(node.rightNode, node);
 }
@@ -116,6 +124,8 @@ function deleteFromTree(node, alien){
 			this.setHeightNode(temp);
 			node = temp;
 
+			node.rightNode = toRotate(node.rightNode);
+			node.leftNode = toRotate(node.leftNode);
 			node = toRotate(node);
 		}
 	}
@@ -134,12 +144,6 @@ function deleteFromTree(node, alien){
 	return node;
 }
 
-function setHeightNode(node){
-	node.heightNode = Math.max( 
-			height(node.leftNode),
-			height(node.rightNode) 
-		) + 1;
-}
 
 function deleteNode(alien){
 	this.root = this.deleteFromTree(this.root, alien);
@@ -161,6 +165,26 @@ function height( t ){
 		return -1;
 	else
 		return t.heightNode;
+}
+
+function createAlien(x, y, type){
+	var id = 0;
+	var index = Math.round( Math.random() * (this.idArray.length - 1) );
+	id = this.idArray[index];
+//alert(index);	
+
+	var alien;
+	if(type == "leader")
+		alien = addLeader(x, y, id);
+	else if(type == "drone")
+		alien = addDrone(x, y, id);
+	else if(type == "mother")
+		alien = addMother(x, y, id);
+	
+	this.idArray.splice(index, 1);
+	//this.nextId++;
+
+	this.insert(alien);
 }
 
 function insert( alien ){
@@ -193,18 +217,17 @@ function insertToTree(alien, t){
 	}
 	else
 		; // Elemento duplicado, no hacer nada
-
-	t.heightNode = Math.max( 
-		height(t.leftNode),
-		height(t.rightNode) 
-		) + 1;
-
+	setHeightNode(t);
 	return t;
 }
 
 function reorderTree(){
-	if(this.root != null)
+	if(this.root != null){		
+		if(this.root.alien.body.y < 30 * this.root.heightNode)
+			this.root.y_node += 30 * this.root.heightNode;
+
 		this.root.reorderNode(this.root.x_node, this.root.y_node, this.root.heightNode);
+	}
 }
 
 function rotateWithLeftChild( k2 ){
@@ -227,6 +250,12 @@ function rotateWithRightChild( k1 ){
 	return k2;
 }
 
+function setHeightNode(node){
+	node.heightNode = Math.max( 
+			height(node.leftNode),
+			height(node.rightNode) 
+		) + 1;
+}
 
 
 function imprimir(){
@@ -238,16 +267,13 @@ function imprimirXAltura( nodo ){
 	if(nodo != null){
 		imprimirXAltura(nodo.leftNode);
 
-text.text += "{";
-if(nodo.leftNode != null)
-	text.text += nodo.leftNode.alien.id + "-";
-
-text.text += "[" + nodo.alien.id + "/" + nodo.heightNode + "]";
-
-if(nodo.rightNode != null)
-	text.text += "-" + nodo.rightNode.alien.id;
-
-text.text += "}";
+		text.text += "{";
+		if(nodo.leftNode != null)
+			text.text += nodo.leftNode.alien.id + "-";
+		text.text += "[" + nodo.alien.id + "/" + nodo.heightNode + "]";
+		if(nodo.rightNode != null)
+			text.text += "-" + nodo.rightNode.alien.id;
+		text.text += "}";
 
 		imprimirXAltura(nodo.rightNode);
 	}

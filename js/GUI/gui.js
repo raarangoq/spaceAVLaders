@@ -4,7 +4,7 @@ function GUI(){
 	// Objetos y Atributos
 	
 	// Pause
-	//this.pause_menu = addPause();
+	this.pause_menu = addPause();
 
 	// Vidas
 	this.lives_bar = addLivesBar();
@@ -17,7 +17,7 @@ function GUI(){
 	this.upScore = upScore;
 
 
-//	this.pauseGame();
+	this.pauseGame();
 
 
 	this.pauseKey = keyboard.addKey(Phaser.Keyboard.ENTER);

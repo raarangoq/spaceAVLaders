@@ -1,16 +1,22 @@
 
 
+
+
 function addPlayer(){
 	player = game.add.sprite(400, 500, 'ship');
     player.anchor.setTo(0.5, 0.5);
     game.physics.enable(player, Phaser.Physics.ARCADE);
 
     addBullets();
-
+    player.ability = "";
+    player.timeForUseItem = game.time.time;
+    player.timeToLoseItem = 10000;
 
 
     player.playerFiresBullet = playerFiresBullet;
     player.updatePlayer = updatePlayer;
+    player.activateAbility = activateAbility;
+    player.updateAbility = updateAbility;
 
 }
 
@@ -43,5 +49,34 @@ function updatePlayer(){
         {
             this.playerFiresBullet();
         }
+
+        if ( !game.physics.arcade.isPaused && keyboard.gKey() )
+            this.activateAbility();
+
+        this.updateAbility();
     }
+}
+
+function updateAbility(){
+    if ( game.time.time - this.timeForUseItem > this.timeToLoseItem )
+        this.ability = "";
+
+    if ( torpedo != null && torpedo.body != null && torpedo.body.y < -20 ){
+        torpedo.destroy();
+        torpedo = null;
+    }
+
+}
+
+function activateAbility(){
+    if( this.ability == "machineGun" ){
+        bullets.activateMachineGun();
+        this.ability = "";
+    }
+    else if( this.ability == "torpedo" ){
+        torpedo = addTorpedo();
+        this.ability = "";
+    }
+
+        
 }

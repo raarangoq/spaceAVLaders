@@ -13,23 +13,47 @@ function addBullets(){
     bullets.setAll('checkWorldBounds', true);
 
     bullets.bulletTime = 0;
-    bullets.timeBetweenFires = 200;
+    bullets.timeBetweenFires = 500;
+    bullets.bulletsForMachineGun = 0;
 
-    bullets.damage = 100;
+    bullets.damage = 25;
+    bullets.speed = 400;
 
 
     bullets.fireBullet = fireBullet;
+    bullets.activateMachineGun = activateMachineGun;
 }
 
 
 function fireBullet(){
 	//  Grab the first bullet we can from the pool
-    bullet = bullets.getFirstExists(false);
+    bullet = this.getFirstExists(false);
     if (bullet)
     {
         //  And fire it
         bullet.reset(player.x, player.y + 8);
-        bullet.body.velocity.y = -400;
+        bullet.body.velocity.y = -this.speed;
         this.bulletTime = game.time.now + this.timeBetweenFires;
+
+        this.bulletsForMachineGun--;
     }
+
+    if( this.bulletsForMachineGun <= 0 )
+        this.timeBetweenFires = 500;
+}
+
+function activateMachineGun(){
+    this.bulletsForMachineGun = 20;
+    this.timeBetweenFires = 180;
+}
+
+function addTorpedo(){
+    torpedo = game.add.sprite( player.body.x, player.body.y - 20 , 'ship');
+    game.physics.enable(torpedo, Phaser.Physics.ARCADE);
+    torpedo.body.colliderWorldBounds = true;
+    torpedo.body.acceleration.y = -300;
+
+    torpedo.damage = 150;
+
+    return torpedo;
 }

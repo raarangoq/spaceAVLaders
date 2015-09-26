@@ -1,20 +1,25 @@
 
+function addAlien(x, y, i, type){
 
+    var alien;
+    alien = game.add.sprite(x, y, type);
 
-function addAlien(x, y, i){
-
-    var alien = game.add.sprite(x, y, 'invader');
     game.physics.enable(alien, Phaser.Physics.ARCADE);
     alien.body.colliderWorldBounds = true;
 
+    var textId = game.add.text(10, -10, i, { fontSize: '14px', fill: '#ffffff'});
+    var child = alien.addChild(textId);
+    game.physics.enable(child, Phaser.Physics.ARCADE);
+
+    alien.type = type;
     alien.firingTimer = 0;
     alien.id = i;
 
     alien.health = 100;
-    alien.speed = 5000;
+    alien.speed = 100;
 
-    alien.x_target = 0;
-    alien.y_target = 0;
+    alien.x_target = 400;
+    alien.y_target = 300;
 
     alien.updateAlien = updateAlien;
     alien.setTarget = setTarget;
@@ -28,18 +33,12 @@ function updateAlien(){
         this.body.velocity.setTo(0,0);
 }
 
+
 function setTarget(x, y){
     this.x_target = x;
     this.y_target = y;
 
-    var distance = this.speed * ( 
-        game.physics.arcade.distanceToXY(
-            tree.root.alien, 
-            tree.root.alien.x_target, 
-            tree.root.alien.y_target) / 800);
-
-
-    game.physics.arcade.moveToXY(this, x, y, null, 3000);
+    game.physics.arcade.moveToXY(this, x, y, this.speed);
 }   
 
 function alienTakeDamage(damage){

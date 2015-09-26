@@ -10,6 +10,7 @@ function addKeyboard(){
 	// Metodos
 	keyboard.downKey = downKey;
 	keyboard.enterKey = enterKey;
+	keyboard.gKey = gKey;
 	keyboard.leftKey = leftKey;
 	keyboard.rightKey = rightKey;
 	keyboard.spaceKey = spaceKey;
@@ -26,6 +27,13 @@ function downKey(){
 
 function enterKey(){
 	if(this.isDown(Phaser.Keyboard.ENTER)){
+		return true;
+	}
+	return false;
+}
+
+function gKey(){
+	if(this.isDown(Phaser.Keyboard.G)){
 		return true;
 	}
 	return false;

@@ -16,26 +16,15 @@ function addAliensBullets(){
 }
 
 
-function fireAlienBullet(){
+function fireAlienBullet(alien){
+ 
 	 //  Grab the first bullet we can from the pool
     enemyBullet = this.getFirstExists(false);
-    livingEnemies.length=0;
-    aliens.forEachAlive(function(alien){
-        // put every living enemy in an array
-        livingEnemies.push(alien);
-    });
 
-
-    if (enemyBullet && livingEnemies.length > 0)
+    if (enemyBullet && !game.physics.arcade.isPaused)
     {
-         
-        var random=game.rnd.integerInRange(0,livingEnemies.length-1);
-        // randomly select one of them
-        var shooter=livingEnemies[random];
         // And fire the bullet from this enemy
-        enemyBullet.reset(shooter.body.x, shooter.body.y);
-
-        game.physics.arcade.moveToObject(enemyBullet,player,120);
-        aliens.firingTimer = game.time.now + 2000;
+        enemyBullet.reset(alien.body.x, alien.body.y);
+        game.physics.arcade.moveToObject(enemyBullet, player, 120);
     }
 }

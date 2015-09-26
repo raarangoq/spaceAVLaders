@@ -13,25 +13,32 @@ var scoreText;
 var lives;
 var enemyBullets;
 var stateText;
-var livingEnemies = [];
 
-var id = 0;
+var items;
+var torpedo;
 
 
 var tree;
 var gui;
 
 
+var pauseImage;
+var winImage;
+var loseImage;
+
+var winState = false;
+
 
 var text;
+var texta;
+
+
 
 levels = {
     create: function() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
     tree = new AVLTree();
-
-    addKeyboard();
 
     //  The scrolling starfield background
     starfield = game.add.tileSprite(0, 0, 800, 600, 'starfield');
@@ -41,6 +48,7 @@ levels = {
 
     //  The baddies!
     this.addAliens();
+    
 
 
     gui = new GUI();
@@ -57,8 +65,16 @@ levels = {
     explosions.forEach(this.setupInvader, this);
     
 
-text = game.add.text(20, 540, 'Cargando...', { fontSize: '16px', fill: '#ffffff'});
+    items = addItem(400, 300, "torpedo");
 
+
+    winImage = game.add.sprite(0, 0, 'win');
+    winImage.visible = false;
+    loseImage = game.add.sprite(0, 0, 'lose');
+    loseImage.visible = false;
+
+text = game.add.text(20, 540, 'Cargando...', { fontSize: '16px', fill: '#ffffff'});
+//texta = game.add.text(20, 40, 'Cargando...', { fontSize: '16px', fill: '#ffffff'});
 
     },
 
@@ -67,26 +83,47 @@ text = game.add.text(20, 540, 'Cargando...', { fontSize: '16px', fill: '#ffffff'
         //  Scroll the background
         starfield.tilePosition.y += 2;
 
+        tree.updateTree();
+
         if (player.alive)
         {
             player.updatePlayer();
-            //aliens.updateAliens();
-
             //  Run collision
 
-            game.physics.arcade.overlap(enemyBullets, player, this.enemyHitsPlayer, null, this);
-            tree.updateTree();
+            if ( !winState )
+                game.physics.arcade.overlap(enemyBullets, player, this.enemyHitsPlayer, null, this);
+            game.physics.arcade.overlap(items, player, this.setAbility);
+        }
+        else{
+            if( keyboard.enterKey() )
+                this.restart();
+        }
+
+        if( winState ){
+            if( tree.root != null )
+                tree.alienToDestroy = tree.root.alien;
+
+            winImage.visible = true;
+            if( keyboard.enterKey() )
+                this.restart();
         }
 
     },
 
     addAliens: function(){
-        for(var i=0;i<15; i++){
-            var alien = addDrone(400, 30, i);
-            tree.insert(alien);
+        tree.createAlien(400, 30, "leader");
+        for(var i=0;i<6; i++){
+            tree.createAlien(400, 30, "drone");
         }
-        tree.reorderTree();
+        tree.createAlien(400, 30, "mother");
 
+        tree.reorderTree();
+        addAliensBullets();
+    },
+
+    setAbility: function(item, player){
+        gui.upScore(3000);
+        items.takeItem();
     },
 
     enemyHitsPlayer: function(player,bullet) {
@@ -111,21 +148,13 @@ text = game.add.text(20, 540, 'Cargando...', { fontSize: '16px', fill: '#ffffff'
             player.kill();
             enemyBullets.callAll('kill');
 
-            stateText.text = " GAME OVER \n Click to restart";
-            stateText.visible = true;
-
-            //the "click to restart" handler
-            game.input.onTap.addOnce(this.restart,this);
+            loseImage.visible = true;
         }
 
     },
 
     render: function() {
-
-        // for (var i = 0; i < aliens.length; i++)
-        // {
-        //     game.debug.body(aliens.children[i]);
-        // }
+ text.text = player.ability;
 
     },
 
@@ -137,21 +166,8 @@ text = game.add.text(20, 540, 'Cargando...', { fontSize: '16px', fill: '#ffffff'
     },
 
     restart: function() {
-
-        //  A new level starts
-        
-        //resets the life count
-        lives.callAll('revive');
-        //  And brings the aliens back from the dead :)
-    //    aliens.removeAll();
-    //    aliens.createAliens();
-
-        //revives the player
-        player.revive();
-        //hides the text
-        stateText.visible = false;
-
-        tree.update();
+        winState = false;
+        game.state.start('levels');
 
     },
 
