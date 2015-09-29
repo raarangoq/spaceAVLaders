@@ -3,9 +3,7 @@ function addAlien(x, y, i, type){
 
     var alien;
     alien = game.add.sprite(x, y, type);
-
     game.physics.enable(alien, Phaser.Physics.ARCADE);
-    alien.body.colliderWorldBounds = true;
 
     var textId = game.add.text(10, -10, i, { fontSize: '14px', fill: '#ffffff'});
     var child = alien.addChild(textId);
@@ -20,6 +18,8 @@ function addAlien(x, y, i, type){
 
     alien.x_target = 400;
     alien.y_target = 300;
+
+    alien.sound = game.add.audio('rugido');
 
     alien.updateAlien = updateAlien;
     alien.setTarget = setTarget;

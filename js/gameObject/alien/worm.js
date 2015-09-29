@@ -2,18 +2,16 @@
 
 function addWorm(x, y, i){
     var worm = addAlien(x, y, i, "leader");
-    worm.scale.setTo(2, 2);
     worm.firingTimer = 0;
     worm.health = 50;
 
     worm.lastFire = game.time.time;
-    worm.speedFiring = 500;
+    worm.speedFiring = 4000;
 
     worm.updateAlien = updateWorm;
     worm.destroyAlien = destroyWorm;
 
     addWormAnimations(worm);
-    alienWorms.push(worm);
     return worm;
 }
 
@@ -36,8 +34,7 @@ function destroyWorm(){
 	gui.upScore(75);
 
 	for(var i=0; i<3; i++){
-		var alien = addDrone(this.body.x, this.body.y, tree.nextId);
-    	tree.insert(alien);
+		tree.createAlien(this.body.x, this.body.y, "drone");
 	}
 	tree.reorderTree();
 

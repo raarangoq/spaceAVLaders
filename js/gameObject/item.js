@@ -11,7 +11,7 @@ function addItem(x, y, type){
 
     game.physics.arcade.moveToXY(item, x, y+20, 120);
 
-
+    item.sound = game.add.audio('item');
 
     item.takeItem = takeItem;
 
@@ -20,6 +20,13 @@ function addItem(x, y, type){
 
 
 function takeItem(){
+    this.sound.play();
+
+    if (this.type == "munition"){
+        player.munition += 40;
+        this.type = "";
+    }
+
 	player.ability = this.type;
 	player.timeForUseItem = game.time.time;
 	this.destroy();

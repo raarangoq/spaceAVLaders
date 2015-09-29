@@ -171,7 +171,6 @@ function createAlien(x, y, type){
 	var id = 0;
 	var index = Math.round( Math.random() * (this.idArray.length - 1) );
 	id = this.idArray[index];
-//alert(index);	
 
 	var alien;
 	if(type == "leader")
@@ -180,6 +179,10 @@ function createAlien(x, y, type){
 		alien = addDrone(x, y, id);
 	else if(type == "mother")
 		alien = addMother(x, y, id);
+	else if(type == "worm")
+		alien = addWorm(x, y, id);
+	else if(type == "boss")
+		alien = addBoss();
 	
 	this.idArray.splice(index, 1);
 	//this.nextId++;

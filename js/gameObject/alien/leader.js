@@ -12,7 +12,6 @@ function addLeader(x, y, i){
     leader.destroyAlien = destroyLeader;
 
     addLeaderAnimations(leader);
-    alienLeader = leader;
     return leader;
 }
 
