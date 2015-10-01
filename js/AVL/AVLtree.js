@@ -1,18 +1,17 @@
 
 
 
-
 function AVLTree(){
 	this.root = null;
 
 	this.alienToDestroy = null;
-	timeToMove = game.time.time;
 	this.direction = "right";
 	this.timeToTarget = 4000;
 	this.SPEED = 8000;
 	this.nextId = 0;
 	this.idArray = [];
 
+this.new_spider_sound = game.add.audio('new_spider');
 
 	this.updateTree = updateTree;
 	this.insert = insert;
@@ -49,7 +48,20 @@ function updateTree(){
 
 	if(tree.root == null)
 		return;
+
+	//bmd.clear();
+	//bmd.ctx.beginPath();
+
+	graphics.clear();
+	graphics.lineStyle(2, 0xffffff, 1);
+
 	this.root.updateNode();
+
+	//bmd.ctx.lineWidth = 4;
+
+	//bmd.ctx.stroke();
+	//bmd.ctx.closePath();
+	//bmd.render();
 
 	this.root.setRootDirection();
 
@@ -168,6 +180,8 @@ function height( t ){
 }
 
 function createAlien(x, y, type){
+this.new_spider_sound.play();
+	
 	var id = 0;
 	var index = Math.round( Math.random() * (this.idArray.length - 1) );
 	id = this.idArray[index];

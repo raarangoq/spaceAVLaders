@@ -6,6 +6,7 @@ var rootDirection;
 
 
 function AVLNode(alien, leftAlien, rightAlien){
+
 	this.alien = alien;
 	this.leftNode = leftAlien;
 	this.rightNode = rightAlien;
@@ -20,21 +21,45 @@ function AVLNode(alien, leftAlien, rightAlien){
 	this.setAlienToDestroy = setAlienToDestroy;
 	this.setAlienToDestroyWithTorpedo = setAlienToDestroyWithTorpedo;
 
+
+	this.drawLine = drawLine;
+
+}
+
+function drawLine(node){
+	
+	//bmd.ctx.moveTo(node.alien.body.x + 16, node.alien.body.y + 16);
+	//bmd.ctx.lineTo(this.alien.body.x + 16, this.alien.body.y + 16);
+	
+	
+	graphics.moveTo(this.alien.body.x + 16, this.alien.body.y + 16);
+	graphics.lineTo(node.alien.body.x + 16, node.alien.body.y + 16);
+	
+	//bmd.refreshBuffer();
 }
 
 function updateNode(){
-	if( this.leftNode != null )
+
+	if( this.leftNode != null ){
 		this.leftNode.updateNode();
 
+		this.drawLine(this.leftNode);
+	}
+
+	
 	this.alien.updateAlien();
 	game.physics.arcade.overlap(bullets, this.alien, this.setAlienToDestroy); 
-
 	if ( torpedo != null ){
 		game.physics.arcade.overlap(this.alien, torpedo, this.setAlienToDestroyWithTorpedo); 		
 	}
 		
-	if( this.rightNode != null )
+
+	if( this.rightNode != null ){
 		this.rightNode.updateNode();
+
+		this.drawLine(this.rightNode);
+	}
+	
 } 
 
 

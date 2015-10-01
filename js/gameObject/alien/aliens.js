@@ -19,7 +19,7 @@ function addAlien(x, y, i, type){
     alien.x_target = 400;
     alien.y_target = 300;
 
-    alien.sound = game.add.audio('rugido');
+    alien.hit_sound = game.add.audio('rugido');
 
     alien.updateAlien = updateAlien;
     alien.setTarget = setTarget;

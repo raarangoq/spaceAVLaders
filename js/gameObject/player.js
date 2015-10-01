@@ -14,21 +14,78 @@ function addPlayer(){
     player.health = 100;
     player.munition = 40;
 
+    player.timeWithoutMunition = game.time.time;
+    player.timeForNewMunition = 40000;
+
+    player.timeWithVelocity = 5000;
+    player.timeVelocityActivated = game.time.time - 5000;
+    player.speed = 200;
+    player.highSpeed = 500;
+
+    player.hit_sound = game.add.audio('hit', 0.3);
 
     player.playerFiresBullet = playerFiresBullet;
     player.updatePlayer = updatePlayer;
     player.activateAbility = activateAbility;
+    player.activateVelocity = activateVelocity;
     player.updateAbility = updateAbility;
     player.playerTakeDamage = playerTakeDamage;
 
+}
+
+function updatePlayer(){
+    if (player.alive){
+
+        player.body.velocity.setTo(0, 0);
+
+        if (game.time.time - this.timeVelocityActivated < this.timeWithVelocity)
+            this.speed = 500;
+        else
+            this.speed = 200;
+
+
+        if ( keyboard.leftKey() && player.body.x>50)
+            player.body.velocity.x = -this.speed;
+        else if ( keyboard.rightKey() && player.body.x<730)
+            player.body.velocity.x = this.speed;
+
+        if ( keyboard.spaceKey() )
+            this.playerFiresBullet();
+        
+
+        if ( !game.physics.arcade.isPaused && keyboard.gKey() )
+            this.activateAbility();
+
+        if ( this.munition <= 0 ) {
+            texta.text = "Time for munition: " + 
+                (  this.timeForNewMunition - (game.time.time - this.timeWithoutMunition)  ) / 1000;
+
+            if (game.time.time - this.timeWithoutMunition > this.timeForNewMunition){
+                this.munition = 1;
+                item_munition = addItem(400, 0, "munition");
+            }
+
+        }
+        else 
+            texta.text = "";
+
+
+        this.updateAbility();
+    }
 }
 
 function playerFiresBullet() {
     //  To avoid them being allowed to fire too fast we set a time limit
     if (game.time.now > bullets.bulletTime && this.munition > 0)
     {
+        
         bullets.fireBullet();
         this.munition--;
+
+        if ( this.munition <= 0 ){
+            this.timeWithoutMunition = game.time.time;
+            this.timeForNewMunition = 10000 + (Math.random() * 20000);
+        }
     }
 }
 
@@ -36,6 +93,8 @@ function playerTakeDamage(){
     this.health -= enemyBullets.damage;
 
     if (this.health <= 0){
+        this.hit_sound.play();
+
         this.health = 100;
         live = lives.getFirstAlive();
 
@@ -48,27 +107,6 @@ function playerTakeDamage(){
         var explosion = explosions.getFirstExists(false);
         explosion.reset(player.body.x, player.body.y);
         explosion.play('kaboom', 30, false, true);
-    }
-}
-
-function updatePlayer(){
-    if (player.alive){
-
-        player.body.velocity.setTo(0, 0);
-
-        if ( keyboard.leftKey() && player.body.x>50)
-            player.body.velocity.x = -200;
-        else if ( keyboard.rightKey() && player.body.x<730)
-            player.body.velocity.x = 200;
-
-        if ( keyboard.spaceKey() )
-            this.playerFiresBullet();
-        
-
-        if ( !game.physics.arcade.isPaused && keyboard.gKey() )
-            this.activateAbility();
-
-        this.updateAbility();
     }
 }
 
@@ -91,5 +129,13 @@ function activateAbility(){
     else if( this.ability == "torpedo" ){
         torpedo = addTorpedo();
         this.ability = "";
-    }        
+    }  
+    else if (this.ability == "velocity"){
+        this.activateVelocity();
+        this.ability = "";
+    }      
+}
+
+function activateVelocity(){
+    this.timeVelocityActivated = game.time.time;
 }

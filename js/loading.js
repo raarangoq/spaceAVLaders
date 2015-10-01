@@ -37,6 +37,11 @@ text.fixedToCamera = true;
 
     game.load.audio('item', 'assets/sounds/item.mp3');
     game.load.audio('rugido', 'assets/sounds/rugido.mp3');
+    game.load.audio('new_spider', 'assets/sounds/nace_araña.mp3');
+    game.load.audio('arrow', 'assets/sounds/flecha.mp3');
+    game.load.audio('torpedo', 'assets/sounds/torpedo.mp3');
+    game.load.audio('creature', 'assets/sounds/creature.mp3');
+    game.load.audio('hit', 'assets/sounds/golpes.mp3');
 
 	},
 

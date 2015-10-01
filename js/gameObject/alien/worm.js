@@ -32,11 +32,19 @@ function updateWorm(){
 
 function destroyWorm(){
 	gui.upScore(75);
-
+    this.hit_sound.play();
 	for(var i=0; i<3; i++){
 		tree.createAlien(this.body.x, this.body.y, "drone");
 	}
 	tree.reorderTree();
+
+    if (items.body == null)
+        if ( Math.random() <= 0.1)
+            items = addItem(this.body.x, this.body.y, "torpedo");
+        else if (Math.random() <= 0.1)
+            items = addItem(this.body.x, this.body.y, "machineGun");
+        else if (Math.random() <= 0.1)
+            items = addItem(this.body.x, this.body.y, "velocity");
 
 	this.destroy();
 }

@@ -13,13 +13,17 @@ function addBoss(){
 
     
     leftWeapon = addWeapon(100, 0);
-    //boss.addChild(leftWeapon);
+    boss.addChild(leftWeapon);
 
     rightWeapon = addWeapon(300, 0);
-    //boss.addChild(rightWeapon);
+    boss.addChild(rightWeapon);
 
     kernel = addKernel(200, 0);
     kernel.visible = false;
+    boss.addChild(kernel);
+
+    boss.hit_sound = game.add.audio('creature');
+
 
     boss.updateBoss = updateBoss;
 
@@ -40,6 +44,9 @@ function updateBoss(){
         	enemyBullets.fireAlienBullet(leftWeapon);
         if (!rightWeapon.destroyed)
         	enemyBullets.fireAlienBullet(rightWeapon);
+
+        if (leftWeapon.destroyed && rightWeapon.destroyed && !kernel.destroyed)
+            enemyBullets.fireAlienBullet(kernel);
         this.lastFire = game.time.time;
     }
 

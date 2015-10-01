@@ -15,6 +15,7 @@ var enemyBullets;
 //var stateText;
 
 var items;
+var item_munition;
 var torpedo;
 
 
@@ -35,8 +36,10 @@ var sound_backgroud;
 
 var text;
 var texta;
+var textb;
 
-
+var bmd, sprite;
+var graphics;
 
 levels = {
     create: function() {
@@ -47,29 +50,36 @@ levels = {
 
     addPlayer();
 
-game.global.level = 6;
+//bmd.addToWorld(); 
+
+//bmd = game.add.bitmapData(800, 600);
+//bmd.ctx.beginPath();
+//bmd.ctx.lineWidth = "4";
+//bmd.ctx.strokeStyle = "white";
+//bmd.ctx.stroke();
+//sprite = game.add.sprite(0, 0, bmd);
+
+graphics = game.add.graphics( 0, 0 );
+graphics.lineStyle(2, 0xffffff, 1);
+
+//game.global.level = 7;
 
     this.addAliens();
     gui = new GUI();
 
-    //  Text
-    //stateText = game.add.text(game.world.centerX, game.world.centerY ,' ', { font: '84px Arial', fill: '#fff' });
-    //stateText.anchor.setTo(0.5, 0.5);
-    //stateText.visible = false;
 
     //  An explosion pool
     explosions = game.add.group();
     explosions.createMultiple(30, 'kaboom');
     explosions.forEach(this.setupExplosion, this);
     
-    items = addItem(400, 000, "munition");
+    items = addItem(400, 000, "velocity");
 
 
     winImage = game.add.sprite(0, 0, 'win');
     winImage.visible = false;
     loseImage = game.add.sprite(0, 0, 'lose');
     loseImage.visible = false;
-
 
     if(game.global.level < 5)
         sound_backgroud = game.add.audio('levelA', 0.5, true);
@@ -81,8 +91,9 @@ game.global.level = 6;
 
 text = game.add.text(20, 540, 'Cargando...', { fontSize: '16px', fill: '#ffffff'});
 texta = game.add.text(20, 400, 'Cargando...', { fontSize: '16px', fill: '#ffffff'});
+textb = game.add.text(20, 200, 'Cargando...', { fontSize: '16px', fill: '#ffffff'});
 
-    
+ game.time.advancedTiming = true;  
 
     },
 
@@ -90,8 +101,6 @@ texta = game.add.text(20, 400, 'Cargando...', { fontSize: '16px', fill: '#ffffff
 
     update: function() {
 
-        //  Scroll the background
-        starfield.tilePosition.y += 2;
 
         tree.updateTree();
 
@@ -100,7 +109,11 @@ texta = game.add.text(20, 400, 'Cargando...', { fontSize: '16px', fill: '#ffffff
             player.updatePlayer();
             if ( !winState )
                 game.physics.arcade.overlap(enemyBullets, player, this.enemyHitsPlayer, null, this);
+
             game.physics.arcade.overlap(items, player, this.setAbility);
+               
+
+            game.physics.arcade.overlap(item_munition, player, this.setAbility);
 
             if( game.global.level == 7 )
                 boss.updateBoss();
@@ -118,6 +131,9 @@ texta = game.add.text(20, 400, 'Cargando...', { fontSize: '16px', fill: '#ffffff
             if( keyboard.enterKey() )
                 this.restart();
         }
+
+
+
 
     },
 
@@ -167,7 +183,7 @@ texta = game.add.text(20, 400, 'Cargando...', { fontSize: '16px', fill: '#ffffff
 
     setAbility: function(item, player){
         gui.upScore(3000);
-        items.takeItem();
+        item.takeItem();
     },
 
     enemyHitsPlayer: function(player,bullet) {
@@ -188,6 +204,7 @@ texta = game.add.text(20, 400, 'Cargando...', { fontSize: '16px', fill: '#ffffff
 
     render: function() {
  text.text = "Health: " + player.health + ". Munition: " + player.munition + ". Ability: " + player.ability;
+textb.text = game.time.fps;
 
     },
 

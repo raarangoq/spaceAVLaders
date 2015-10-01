@@ -46,6 +46,8 @@ function destroyWeapon(){
 	//  Increase the score
 	gui.upScore(1000);
 
+	boss.hit_sound.play();
+
 	//  And create an explosion :)
     var explosion = explosions.getFirstExists(false);
     explosion.reset(this.body.x, this.body.y);

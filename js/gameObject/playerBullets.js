@@ -19,6 +19,9 @@ function addBullets(){
     bullets.damage = 25;
     bullets.speed = 400;
 
+    bullets.arrow_sound = game.add.audio("arrow", 0.2);
+    bullets.torpedo_sound = game.add.audio("torpedo", 0.5);
+
 
     bullets.fireBullet = fireBullet;
     bullets.activateMachineGun = activateMachineGun;
@@ -30,6 +33,8 @@ function fireBullet(){
     bullet = this.getFirstExists(false);
     if (bullet)
     {
+        this.arrow_sound.play();
+
         //  And fire it
         bullet.reset(player.x, player.y + 8);
         bullet.body.velocity.y = -this.speed;
@@ -48,12 +53,16 @@ function activateMachineGun(){
 }
 
 function addTorpedo(){
+bullets.torpedo_sound.play();
+
     torpedo = game.add.sprite( player.body.x, player.body.y - 20 , 'ship');
     game.physics.enable(torpedo, Phaser.Physics.ARCADE);
     torpedo.body.colliderWorldBounds = true;
     torpedo.body.acceleration.y = -300;
 
     torpedo.damage = 150;
+
+
 
     return torpedo;
 }

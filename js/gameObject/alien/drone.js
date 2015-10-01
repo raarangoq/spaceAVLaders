@@ -19,6 +19,17 @@ function addDroneAnimations(drone){
 function destroyDrone(){
 	//  Increase the score
 	gui.upScore(25);
+    this.hit_sound.play();
+
+    if (items.body == null)
+        if ( Math.random() <= 0.1)
+            items = addItem(this.body.x, this.body.y, "torpedo");
+        else if (Math.random() <= 0.1)
+            items = addItem(this.body.x, this.body.y, "machineGun");
+        else if (Math.random() <= 0.1)
+            items = addItem(this.body.x, this.body.y, "velocity");
 
 	this.destroy();
+
+    
 }

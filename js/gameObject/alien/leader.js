@@ -33,7 +33,7 @@ function updateLeader(){
 function destroyLeader(){
 	//  Increase the score
 	gui.upScore(100);
-
+    this.hit_sound.play();
     winState = true;
 
 	this.destroy();
