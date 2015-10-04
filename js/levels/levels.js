@@ -6,13 +6,15 @@ var aliens;
 var bullets;
 var keyboard;
 var explosions;
+var spiderExplodes;
 var starfield;
 var score = 0;
 var scoreString = '';
 var scoreText;
 var lives;
 var enemyBullets;
-//var stateText;
+var weaponBullets;
+var bossBullets;
 
 var items;
 var item_munition;
@@ -26,6 +28,7 @@ var gui;
 var pauseImage;
 var winImage;
 var loseImage;
+var endImage;
 
 var winState = false;
 var boss;
@@ -50,36 +53,32 @@ levels = {
 
     addPlayer();
 
-//bmd.addToWorld(); 
-
-//bmd = game.add.bitmapData(800, 600);
-//bmd.ctx.beginPath();
-//bmd.ctx.lineWidth = "4";
-//bmd.ctx.strokeStyle = "white";
-//bmd.ctx.stroke();
-//sprite = game.add.sprite(0, 0, bmd);
-
-graphics = game.add.graphics( 0, 0 );
-graphics.lineStyle(2, 0xffffff, 1);
+    graphics = game.add.graphics( 0, 0 );
+    graphics.lineStyle(2, 0xffffff, 1);
 
 //game.global.level = 7;
 
     this.addAliens();
-    gui = new GUI();
-
-
+    
     //  An explosion pool
     explosions = game.add.group();
-    explosions.createMultiple(30, 'kaboom');
+    explosions.createMultiple(10, 'kaboom');
     explosions.forEach(this.setupExplosion, this);
-    
-    items = addItem(400, 000, "velocity");
+
+    spiderExplodes = game.add.group();
+    spiderExplodes.createMultiple(30, 'spiderDie');
+    spiderExplodes.forEach(this.setupExplosion, this);
+
+
+    items = addItem(400, 000, "torpedo");
 
 
     winImage = game.add.sprite(0, 0, 'win');
     winImage.visible = false;
     loseImage = game.add.sprite(0, 0, 'lose');
     loseImage.visible = false;
+    endImage = game.add.sprite(0, 0, 'end');
+    endImage.visible = false;
 
     if(game.global.level < 5)
         sound_backgroud = game.add.audio('levelA', 0.5, true);
@@ -93,7 +92,11 @@ text = game.add.text(20, 540, 'Cargando...', { fontSize: '16px', fill: '#ffffff'
 texta = game.add.text(20, 400, 'Cargando...', { fontSize: '16px', fill: '#ffffff'});
 textb = game.add.text(20, 200, 'Cargando...', { fontSize: '16px', fill: '#ffffff'});
 
- game.time.advancedTiming = true;  
+  
+
+gui = new GUI();
+
+game.time.advancedTiming = true;
 
     },
 
@@ -107,12 +110,15 @@ textb = game.add.text(20, 200, 'Cargando...', { fontSize: '16px', fill: '#ffffff
         if (player.alive)
         {
             player.updatePlayer();
-            if ( !winState )
+            if ( !winState ){
                 game.physics.arcade.overlap(enemyBullets, player, this.enemyHitsPlayer, null, this);
+                if( game.global.level == 7){
+                    game.physics.arcade.overlap(weaponBullets, player, this.weaponHitsPlayer, null, this);
+                    game.physics.arcade.overlap(bossBullets, player, this.bossHitsPlayer, null, this);
+                }
+            }
 
             game.physics.arcade.overlap(items, player, this.setAbility);
-               
-
             game.physics.arcade.overlap(item_munition, player, this.setAbility);
 
             if( game.global.level == 7 )
@@ -127,12 +133,16 @@ textb = game.add.text(20, 200, 'Cargando...', { fontSize: '16px', fill: '#ffffff
             if( tree.root != null )
                 tree.alienToDestroy = tree.root.alien;
 
-            winImage.visible = true;
+            if (game.global.level != 7)
+                winImage.visible = true;
+            else
+                endImage.visible = true;
             if( keyboard.enterKey() )
                 this.restart();
         }
 
 
+        gui.updateGui();
 
 
     },
@@ -167,7 +177,7 @@ textb = game.add.text(20, 200, 'Cargando...', { fontSize: '16px', fill: '#ffffff
             }
             tree.createAlien(400, 30, "worm");
             tree.createAlien(400, 30, "worm");
-            tree.createAlien(400, 30, "mother");
+           tree.createAlien(400, 30, "mother");
         }
 
         tree.reorderTree();
@@ -175,10 +185,10 @@ textb = game.add.text(20, 200, 'Cargando...', { fontSize: '16px', fill: '#ffffff
     },
 
     // Establecer la explosión
-    setupExplosion: function(invader) {
-        invader.anchor.x = 0.5;
-        invader.anchor.y = 0.5;
-        invader.animations.add('kaboom');
+    setupExplosion: function(explosion) {
+        explosion.anchor.x = 0.5;
+        explosion.anchor.y = 0.5;
+        explosion.animations.add('kaboom', null, 10);
     },
 
     setAbility: function(item, player){
@@ -186,24 +196,43 @@ textb = game.add.text(20, 200, 'Cargando...', { fontSize: '16px', fill: '#ffffff
         item.takeItem();
     },
 
-    enemyHitsPlayer: function(player,bullet) {
+    enemyHitsPlayer: function(player, bullet) {
         
         bullet.kill();
         player.playerTakeDamage();
 
+        this.playerDies();
+
+    },
+
+    weaponHitsPlayer: function(player, bullet){
+        bullet.kill();
+        player.playerTakeDamageWeapon();
+
+        this.playerDies();
+    },
+
+    bossHitsPlayer: function(player, bullet){
+        bullet.kill();
+        player.playerTakeDamageBoss();
+
+        this.playerDies();
+    },
+
+    playerDies: function(){
         // When the player dies
-        if (lives.countLiving() < 1)
+        if (lives < 1)
         {
             player.kill();
             enemyBullets.callAll('kill');
 
             loseImage.visible = true;
         }
-
     },
 
     render: function() {
- text.text = "Health: " + player.health + ". Munition: " + player.munition + ". Ability: " + player.ability;
+if (game.global.level == 7)       
+    text.text = leftWeapon.destroyed + "/" + rightWeapon.destroyed;
 textb.text = game.time.fps;
 
     },

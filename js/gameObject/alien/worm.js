@@ -1,7 +1,7 @@
 
 
 function addWorm(x, y, i){
-    var worm = addAlien(x, y, i, "leader");
+    var worm = addAlien(x, y, i, "worm");
     worm.firingTimer = 0;
     worm.health = 50;
 
@@ -16,7 +16,7 @@ function addWorm(x, y, i){
 }
 
 function addWormAnimations(worm){
-    worm.animations.add('fly', [ 0 ], 20, true);
+    worm.animations.add('fly', [ 0, 1, 2, 3 ], 20, true);
     worm.play('fly');
 }
 

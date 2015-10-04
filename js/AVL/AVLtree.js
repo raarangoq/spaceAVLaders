@@ -49,19 +49,11 @@ function updateTree(){
 	if(tree.root == null)
 		return;
 
-	//bmd.clear();
-	//bmd.ctx.beginPath();
-
 	graphics.clear();
 	graphics.lineStyle(2, 0xffffff, 1);
 
 	this.root.updateNode();
 
-	//bmd.ctx.lineWidth = 4;
-
-	//bmd.ctx.stroke();
-	//bmd.ctx.closePath();
-	//bmd.render();
 
 	this.root.setRootDirection();
 
@@ -70,9 +62,9 @@ function updateTree(){
 		this.deleteNode(this.alienToDestroy);
      
 	    //  And create an explosion :)
-	    var explosion = explosions.getFirstExists(false);
+	    var explosion = spiderExplodes.getFirstExists(false);
 	    explosion.reset(this.alienToDestroy.body.x, this.alienToDestroy.body.y);
-	    explosion.play('kaboom', 30, false, true);
+	    explosion.play('kaboom', null, false, true);
 
 	    this.alienToDestroy.destroyAlien();
 	    this.alienToDestroy = null;

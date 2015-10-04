@@ -3,7 +3,7 @@
 var live;
 
 function addPlayer(){
-	player = game.add.sprite(400, 500, 'ship');
+	player = game.add.sprite(400, 500, 'player');
     player.anchor.setTo(0.5, 0.5);
     game.physics.enable(player, Phaser.Physics.ARCADE);
 
@@ -30,6 +30,9 @@ function addPlayer(){
     player.activateVelocity = activateVelocity;
     player.updateAbility = updateAbility;
     player.playerTakeDamage = playerTakeDamage;
+    player.playerTakeDamageWeapon = playerTakeDamageWeapon;
+    player.playerTakeDamageBoss = playerTakeDamageBoss;
+    player.checkHealth = checkHealth;
 
 }
 
@@ -89,19 +92,11 @@ function playerFiresBullet() {
     }
 }
 
-function playerTakeDamage(){
-    this.health -= enemyBullets.damage;
-
+function checkHealth(){
     if (this.health <= 0){
         this.hit_sound.play();
-
+        lives--;
         this.health = 100;
-        live = lives.getFirstAlive();
-
-        if (live)
-        {
-            live.kill();
-        }
 
         //  And create an explosion :)
         var explosion = explosions.getFirstExists(false);
@@ -110,9 +105,29 @@ function playerTakeDamage(){
     }
 }
 
+function playerTakeDamage(){
+    this.health -= enemyBullets.damage;
+
+    this.checkHealth();
+}
+
+function playerTakeDamageWeapon(){
+    this.health -= weaponBullets.damage;
+
+    this.checkHealth();
+}
+
+function playerTakeDamageBoss(){
+    this.health -= bossBullets.damage;
+
+    this.checkHealth();
+}
+
 function updateAbility(){
-    if ( game.time.time - this.timeForUseItem > this.timeToLoseItem )
+    if ( game.time.time - this.timeForUseItem > this.timeToLoseItem ){
+        gui.changeAbility(false);
         this.ability = "";
+    }
 
     if ( torpedo != null && torpedo.body != null && torpedo.body.y < -20 ){
         torpedo.destroy();
@@ -124,14 +139,17 @@ function updateAbility(){
 function activateAbility(){
     if( this.ability == "machineGun" ){
         bullets.activateMachineGun();
+        gui.changeAbility(false);
         this.ability = "";
     }
     else if( this.ability == "torpedo" ){
         torpedo = addTorpedo();
+        gui.changeAbility(false);
         this.ability = "";
     }  
     else if (this.ability == "velocity"){
         this.activateVelocity();
+        gui.changeAbility(false);
         this.ability = "";
     }      
 }

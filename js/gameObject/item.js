@@ -2,7 +2,10 @@
 function addItem(x, y, type){
 
     var item;
-    item = game.add.sprite(x, y, 'item');
+    
+    item = game.add.sprite(x, y, type);
+    
+        
 
     game.physics.enable(item, Phaser.Physics.ARCADE);
     item.body.colliderWorldBounds = true;
@@ -20,14 +23,19 @@ function addItem(x, y, type){
 
 
 function takeItem(){
+    
+
     this.sound.play();
 
     if (this.type == "munition"){
         player.munition += 40;
         this.type = "";
     }
-
-	player.ability = this.type;
-	player.timeForUseItem = game.time.time;
+    else{
+        gui.changeAbility(true);
+        player.ability = this.type;
+        player.timeForUseItem = game.time.time;
+    }
+	
 	this.destroy();
 }

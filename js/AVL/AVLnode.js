@@ -41,9 +41,8 @@ function drawLine(node){
 function updateNode(){
 
 	if( this.leftNode != null ){
-		this.leftNode.updateNode();
-
 		this.drawLine(this.leftNode);
+		this.leftNode.updateNode();
 	}
 
 	
@@ -55,9 +54,8 @@ function updateNode(){
 		
 
 	if( this.rightNode != null ){
-		this.rightNode.updateNode();
-
 		this.drawLine(this.rightNode);
+		this.rightNode.updateNode();
 	}
 	
 } 

@@ -1,7 +1,7 @@
 
 
 function addMother(x, y, i){
-    var mother = addAlien(x, y, i, "leader");
+    var mother = addAlien(x, y, i, "mother");
     mother.firingTimer = 0;
     mother.health = 100;
     mother.timeToSpamChild = 10000;
@@ -15,7 +15,7 @@ function addMother(x, y, i){
 }
 
 function addMotherAnimations(worm){
-    worm.animations.add('fly', [ 0 ], 20, true);
+    worm.animations.add('fly', [ 0, 1, 2, 3 ], 20, true);
     worm.play('fly');
 }
 

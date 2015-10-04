@@ -6,7 +6,7 @@ function addBullets(){
     bullets = game.add.group();
     bullets.enableBody = true;
     bullets.physicsBodyType = Phaser.Physics.ARCADE;
-    bullets.createMultiple(30, 'bullet');
+    bullets.createMultiple(30, 'arrow');
     bullets.setAll('anchor.x', 0.5);
     bullets.setAll('anchor.y', 1);
     bullets.setAll('outOfBoundsKill', true);
@@ -55,9 +55,12 @@ function activateMachineGun(){
 function addTorpedo(){
 bullets.torpedo_sound.play();
 
-    torpedo = game.add.sprite( player.body.x, player.body.y - 20 , 'ship');
+    torpedo = game.add.sprite( player.body.x + 15, player.body.y - 20 , 'bombArrow');
+    torpedo.anchor.setTo(0.5, 0.5);
+    torpedo.animations.add('fly', [0, 1], 6, true);
     game.physics.enable(torpedo, Phaser.Physics.ARCADE);
     torpedo.body.colliderWorldBounds = true;
+    torpedo.play('fly');
     torpedo.body.acceleration.y = -300;
 
     torpedo.damage = 150;
