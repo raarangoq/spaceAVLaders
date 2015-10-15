@@ -28,7 +28,7 @@ function takeItem(){
     this.sound.play();
 
     if (this.type == "munition"){
-        player.munition += 40;
+        player.munition += 15;
         this.type = "";
     }
     else{

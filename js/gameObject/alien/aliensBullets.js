@@ -28,7 +28,10 @@ function fireAlienBullet(alien){
     {
         // And fire the bullet from this enemy
         enemyBullet.reset(alien.body.x + 10, alien.body.y + 32);
-        game.physics.arcade.moveToObject(enemyBullet, player, 120);
+        if (tree.count > 18)
+            game.physics.arcade.moveToObject(enemyBullet, player, 300);
+        else
+            game.physics.arcade.moveToObject(enemyBullet, player, 120);
     }
 }
 
@@ -75,6 +78,9 @@ function fireBossBullet(){
     {
         // And fire the bullet from this enemy
         enemyBullet.reset(boss.body.x + 50, boss.body.y + 130);
-        game.physics.arcade.moveToObject(enemyBullet, player, 120);
+        if (tree.count > 18)
+            game.physics.arcade.moveToObject(enemyBullet, player, 300);
+        else
+            game.physics.arcade.moveToObject(enemyBullet, player, 120);
     }
 }

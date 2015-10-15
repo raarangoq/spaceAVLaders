@@ -16,7 +16,7 @@ function addWeapon(x, y, side){
     weapon.body.colliderWorldBounds = true;
     weapon.body.setSize(20, 20, 40, 60);
 
-	weapon.health = 100;
+	weapon.health = 250;
 	weapon.destroyed = false;
 
 	weapon.destroyWeapon = destroyWeapon;
@@ -86,4 +86,7 @@ function destroyWeapon(){
 
 	this.destroyed = true;
 	this.play('die');
+
+	if (leftWeapon.destroyed && rightWeapon.destroyed)
+		boss.speedFiring = 750;
 }

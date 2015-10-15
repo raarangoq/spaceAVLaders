@@ -11,6 +11,8 @@ function AVLTree(){
 	this.nextId = 0;
 	this.idArray = [];
 
+	this.count = 0;
+
 this.new_spider_sound = game.add.audio('new_spider');
 
 	this.updateTree = updateTree;
@@ -111,6 +113,7 @@ function findUp(node, father){
 
 function deleteFromTree(node, alien){
 	if( node.alien.id == alien.id ){
+		this.count--;
 		if(node.leftNode == null && node.rightNode == null ){
 			node = null;
 		}
@@ -172,6 +175,11 @@ function height( t ){
 }
 
 function createAlien(x, y, type){
+if (this.count > 18){
+	return;
+}
+
+this.count++;
 this.new_spider_sound.play();
 	
 	var id = 0;

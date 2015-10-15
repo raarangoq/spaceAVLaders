@@ -18,7 +18,7 @@ function addBoss(){
     rightWeapon = addWeapon(247, 34, 'right');
     boss.addChild(rightWeapon);
 
-    boss.health = 150;
+    boss.health = 450;
     boss.destroyed = false;
     boss.lastSpam = game.time.time;
     boss.timeToSpamChild = 5000;
@@ -84,6 +84,11 @@ function updateBoss(){
     game.physics.arcade.overlap(bullets, this, this.damageBoss, null, this);
     if (torpedo != null)
         game.physics.arcade.overlap(torpedo, this, this.damageBossByTorpedo, null, this);
+
+    if(tree.count > 18)
+        this.speedFiring = 750;
+    else
+        this.speedFiring = 1500;
 }
 
 function damageBoss(weapon, bullet){

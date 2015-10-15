@@ -16,7 +16,7 @@ function addLeader(x, y, i){
 }
 
 function addLeaderAnimations(leader){
-    leader.animations.add('fly', [ 0 ], 20, true);
+    leader.animations.add('fly', [ 0, 1, 2, 3 ], 20, true);
     leader.play('fly');
 }
 
@@ -28,6 +28,11 @@ function updateLeader(){
         enemyBullets.fireAlienBullet(this);
         this.lastFire = game.time.time;
     }
+
+    if (tree.count > 18)
+        this.speedFiring = 500;
+    else
+        this.speedFiring = 1000;
 }
 
 function destroyLeader(){

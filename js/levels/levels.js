@@ -11,7 +11,6 @@ var starfield;
 var score = 0;
 var scoreString = '';
 var scoreText;
-var lives;
 var enemyBullets;
 var weaponBullets;
 var bossBullets;
@@ -34,6 +33,8 @@ var winState = false;
 var timeOfWin;
 var boss;
 var link;
+var scream_sound;
+var boom_sound;
 
 
 var sound_backgroud;
@@ -64,7 +65,7 @@ levels = {
     graphics = game.add.graphics( 0, 0 );
     graphics.lineStyle(2, 0x000000, 1);
 
-//game.global.level = 7;
+//game.global.level = 5;
 
     this.addAliens();
     
@@ -86,6 +87,8 @@ if (game.global.level == 7){
     link.animations.add('fly', [0, 1, 2, 3, 4, 5, 6, 7, 8], 10, true);
     //link.scale.setTo()
     link.visible = false;
+    scream_sound = game.add.audio('scream');
+    boom_sound = game.add.audio('boom');
 }
 
     winImage = game.add.sprite(0, 0, 'win');
@@ -169,6 +172,8 @@ game.time.advancedTiming = true;
             }
         }
         else{
+            sound_backgroud.stop();
+
             var local_time = game.time.time - timeOfWin;
             if( local_time < 800){//wait
             }
@@ -177,6 +182,7 @@ game.time.advancedTiming = true;
                     this.addExplosion(boss.body.x + 50, boss.body.y);
                     this.addExplosion(boss.body.x + 50, boss.body.y + 100);
                     playedA = true;
+                    boom_sound.play();
                 }
             }
             else if (local_time < 1200){
@@ -184,6 +190,7 @@ game.time.advancedTiming = true;
                     this.addExplosion(boss.body.x + 50, boss.body.y + 200);
                     this.addExplosion(boss.body.x + 50, boss.body.y + 300);
                     playedB = true;
+                    boom_sound.play();
                 }
             }
             else if (local_time < 1400){
@@ -191,6 +198,7 @@ game.time.advancedTiming = true;
                     this.addExplosion(boss.body.x + 50, boss.body.y + 400);
                     this.addExplosion(boss.body.x + 50, boss.body.y + 450);
                     playedC = true;
+                    boom_sound.play();
                 }
             }
             else if (local_time < 1600){
@@ -205,12 +213,17 @@ game.time.advancedTiming = true;
                     link.animations.play('fly');
                     game.add.tween(link.scale).to({ x:2, y:2 }, 3000, Phaser.Easing.Linear.None, true);
                     game.add.tween(link.body.position).to({x:300, y:200}, 3000, null, true);
+
+                    scream_sound.play();
+                    boom_sound.play();
                 }
             }
             else if (local_time < 8000){
                 if (link.scale.x == 2){
                     link.body.position.setTo(300, 200);
                     link.frame = 9;
+                    scream_sound.stop();
+                    player.hit_sound.play();
                 }
             }
             else{
@@ -301,7 +314,7 @@ game.time.advancedTiming = true;
 
     playerDies: function(){
         // When the player dies
-        if (lives < 1)
+        if (game.global.lives < 1)
         {
             player.kill();
             enemyBullets.callAll('kill');
@@ -328,13 +341,18 @@ game.time.advancedTiming = true;
 
         if (player.alive)
             game.global.level++;
-        else
+        else{
             game.global.level = 1;
+            game.global.lives = 3;
+            score = 0;
+        }
 
         winState = false;
 
-        if (game.global.level == 8)
+        if (game.global.level == 8){
             game.global.level = 1;
+            game.global.lives = 3;
+        }
 
         game.state.start('levels');
 

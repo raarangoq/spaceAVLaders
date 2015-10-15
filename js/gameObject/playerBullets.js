@@ -13,7 +13,7 @@ function addBullets(){
     bullets.setAll('checkWorldBounds', true);
 
     bullets.bulletTime = 0;
-    bullets.timeBetweenFires = 500;
+    bullets.timeBetweenFires = 1000;
     bullets.bulletsForMachineGun = 0;
 
     bullets.damage = 50;
@@ -44,12 +44,12 @@ function fireBullet(){
     }
 
     if( this.bulletsForMachineGun <= 0 )
-        this.timeBetweenFires = 500;
+        this.timeBetweenFires = 1000;
 }
 
 function activateMachineGun(){
     this.bulletsForMachineGun = 20;
-    this.timeBetweenFires = 180;
+    this.timeBetweenFires = 300;
 }
 
 function addTorpedo(){

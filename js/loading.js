@@ -74,6 +74,8 @@ text.fixedToCamera = true;
     game.load.audio('torpedo', 'assets/sounds/torpedo.mp3');
     game.load.audio('creature', 'assets/sounds/creature.mp3');
     game.load.audio('hit', 'assets/sounds/golpes.mp3');
+    game.load.audio('scream', 'assets/sounds/grito.mp3');
+    game.load.audio('boom', 'assets/sounds/explosion.mp3');
 
 	},
 

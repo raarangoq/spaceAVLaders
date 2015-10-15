@@ -11,8 +11,8 @@ function addPlayer(){
     player.ability = "";
     player.timeForUseItem = game.time.time;
     player.timeToLoseItem = 10000;
-    player.health = 100;
-    player.munition = 40;
+//    player.health = 100;
+    player.munition = 15;
 
     player.timeWithoutMunition = game.time.time;
     player.timeForNewMunition = 40000;
@@ -62,8 +62,8 @@ function updatePlayer(){
             this.activateAbility();
 
         if ( this.munition <= 0 ) {
-            texta.text = "Time for munition: " + 
-                (  this.timeForNewMunition - (game.time.time - this.timeWithoutMunition)  ) / 1000;
+texta.text = "Time for munition: " + 
+                Math.round((  this.timeForNewMunition - (game.time.time - this.timeWithoutMunition)  ) / 1000);
 
             if (game.time.time - this.timeWithoutMunition > this.timeForNewMunition){
                 this.munition = 1;
@@ -94,13 +94,13 @@ function playerFiresBullet() {
 }
 
 function checkHealth(){
-    if (this.health <= 0){
+    if (game.global.health <= 0){
         this.hit_sound.play();
-        lives--;
-        if (lives > 0)
-            this.health = 100;
+        game.global.lives--;
+        if (game.global.lives > 0)
+            game.global.health = 100;
         else
-            this.health = 0;
+            game.global.health = 0;
 
         //  And create an explosion :)
         var explosion = explosions.getFirstExists(false);
@@ -110,19 +110,19 @@ function checkHealth(){
 }
 
 function playerTakeDamage(){
-    this.health -= enemyBullets.damage;
+    game.global.health -= enemyBullets.damage;
 
     this.checkHealth();
 }
 
 function playerTakeDamageWeapon(){
-    this.health -= weaponBullets.damage;
+    game.global.health -= weaponBullets.damage;
 
     this.checkHealth();
 }
 
 function playerTakeDamageBoss(){
-    this.health -= bossBullets.damage;
+    game.global.health -= bossBullets.damage;
 
     this.checkHealth();
 }
