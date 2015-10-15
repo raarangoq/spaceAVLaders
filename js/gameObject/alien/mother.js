@@ -3,7 +3,7 @@
 function addMother(x, y, i){
     var mother = addAlien(x, y, i, "mother");
     mother.firingTimer = 0;
-    mother.health = 100;
+    mother.health = 150;
     mother.timeToSpamChild = 10000;
     mother.lastSpam = game.time.time;
 
@@ -23,7 +23,7 @@ function updateMother(){
 	if( game.physics.arcade.distanceToXY(this,this.x_target, this.y_target) < 5 ) 
         this.body.velocity.setTo(0,0);
 
-    if( !game.physics.arcade.isPaused && game.time.time - this.lastSpam > this.timeToSpamChild ){
+    if( !game.physics.arcade.isPaused && lives>0 && game.time.time - this.lastSpam > this.timeToSpamChild ){
     	tree.createAlien(this.body.x, this.body.y + 20, "drone");
     	tree.reorderTree();
     	this.lastSpam = game.time.time;

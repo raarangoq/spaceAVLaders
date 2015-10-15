@@ -34,10 +34,12 @@ function addPlayer(){
     player.playerTakeDamageBoss = playerTakeDamageBoss;
     player.checkHealth = checkHealth;
 
+    player.setWinState = setWinState;
+
 }
 
 function updatePlayer(){
-    if (player.alive){
+    if (player.alive && !winState){
 
         player.body.velocity.setTo(0, 0);
 
@@ -71,10 +73,9 @@ function updatePlayer(){
         }
         else 
             texta.text = "";
-
-
-        this.updateAbility();
+ 
     }
+    this.updateAbility();
 }
 
 function playerFiresBullet() {
@@ -96,7 +97,10 @@ function checkHealth(){
     if (this.health <= 0){
         this.hit_sound.play();
         lives--;
-        this.health = 100;
+        if (lives > 0)
+            this.health = 100;
+        else
+            this.health = 0;
 
         //  And create an explosion :)
         var explosion = explosions.getFirstExists(false);
@@ -156,4 +160,16 @@ function activateAbility(){
 
 function activateVelocity(){
     this.timeVelocityActivated = game.time.time;
+}
+
+function setWinState(){
+    winState = true;
+    timeOfWin = game.time.time;
+
+    if (game.global.level <= 6)
+        game.physics.arcade.moveToXY(this, 300, -100, 200);
+    else{
+        this.body.velocity.setTo(0, 0);
+        link.body.position = this.body.position;
+    }
 }

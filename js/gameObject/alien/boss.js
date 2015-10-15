@@ -117,6 +117,7 @@ function destroyBoss(){
     this.play('die');
 
     this.destroyed = true;
-    winState = true;
+    player.setWinState();
+
 }
 

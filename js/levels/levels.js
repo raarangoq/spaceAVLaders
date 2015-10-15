@@ -31,7 +31,9 @@ var loseImage;
 var endImage;
 
 var winState = false;
+var timeOfWin;
 var boss;
+var link;
 
 
 var sound_backgroud;
@@ -44,17 +46,23 @@ var textb;
 var bmd, sprite;
 var graphics;
 
+
+var playedA = false;
+var playedB = false;
+var playedC = false;
+var playedD = false;
+
 levels = {
     create: function() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
     tree = new AVLTree();
     //  The scrolling starfield background
-    starfield = game.add.tileSprite(0, 0, 800, 600, 'starfield');
+    starfield = game.add.tileSprite(0, 0, 800, 600, 'bridge');
 
     addPlayer();
 
     graphics = game.add.graphics( 0, 0 );
-    graphics.lineStyle(2, 0xffffff, 1);
+    graphics.lineStyle(2, 0x000000, 1);
 
 //game.global.level = 7;
 
@@ -72,6 +80,13 @@ levels = {
 
     items = addItem(400, 000, "torpedo");
 
+if (game.global.level == 7){
+    link = game.add.sprite(0, 0, 'linkfail');
+    game.physics.enable(link, Phaser.Physics.ARCADE);
+    link.animations.add('fly', [0, 1, 2, 3, 4, 5, 6, 7, 8], 10, true);
+    //link.scale.setTo()
+    link.visible = false;
+}
 
     winImage = game.add.sprite(0, 0, 'win');
     winImage.visible = false;
@@ -88,9 +103,10 @@ levels = {
 
 
 
-text = game.add.text(20, 540, 'Cargando...', { fontSize: '16px', fill: '#ffffff'});
+//text = game.add.text(20, 540, 'Cargando...', { fontSize: '16px', fill: '#ffffff'});
 texta = game.add.text(20, 400, 'Cargando...', { fontSize: '16px', fill: '#ffffff'});
-textb = game.add.text(20, 200, 'Cargando...', { fontSize: '16px', fill: '#ffffff'});
+//textb = game.add.text(20, 200, 'Cargando...', { fontSize: '16px', fill: '#ffffff'});
+
 
   
 
@@ -133,10 +149,8 @@ game.time.advancedTiming = true;
             if( tree.root != null )
                 tree.alienToDestroy = tree.root.alien;
 
-            if (game.global.level != 7)
-                winImage.visible = true;
-            else
-                endImage.visible = true;
+            this.playWinState();
+
             if( keyboard.enterKey() )
                 this.restart();
         }
@@ -145,6 +159,72 @@ game.time.advancedTiming = true;
         gui.updateGui();
 
 
+    },
+
+    playWinState: function(){
+        if( game.global.level != 7 ){
+            if ( game.physics.arcade.distanceToXY(player, 300, -100) <= 50 ){
+                player.body.velocity.setTo(0, 0);
+                winImage.visible = true;
+            }
+        }
+        else{
+            var local_time = game.time.time - timeOfWin;
+            if( local_time < 800){//wait
+            }
+            else if (local_time < 1000){
+                if(!playedA){
+                    this.addExplosion(boss.body.x + 50, boss.body.y);
+                    this.addExplosion(boss.body.x + 50, boss.body.y + 100);
+                    playedA = true;
+                }
+            }
+            else if (local_time < 1200){
+                if(!playedB){
+                    this.addExplosion(boss.body.x + 50, boss.body.y + 200);
+                    this.addExplosion(boss.body.x + 50, boss.body.y + 300);
+                    playedB = true;
+                }
+            }
+            else if (local_time < 1400){
+                if(!playedC){
+                    this.addExplosion(boss.body.x + 50, boss.body.y + 400);
+                    this.addExplosion(boss.body.x + 50, boss.body.y + 450);
+                    playedC = true;
+                }
+            }
+            else if (local_time < 1600){
+                if(!playedD){
+                    playedD = true;
+
+                    this.addExplosion(boss.body.x - 50, boss.body.y + 450);
+                    this.addExplosion(boss.body.x + 150, boss.body.y + 450);
+                    player.visible = false;
+                    link.visible = true;
+
+                    link.animations.play('fly');
+                    game.add.tween(link.scale).to({ x:2, y:2 }, 3000, Phaser.Easing.Linear.None, true);
+                    game.add.tween(link.body.position).to({x:300, y:200}, 3000, null, true);
+                }
+            }
+            else if (local_time < 8000){
+                if (link.scale.x == 2){
+                    link.body.position.setTo(300, 200);
+                    link.frame = 9;
+                }
+            }
+            else{
+                endImage.visible = true;
+            }
+        }
+
+        
+    },
+
+    addExplosion: function(x, y){
+        var explosion = explosions.getFirstExists(false);
+        explosion.reset(x, y);
+        explosion.play('kaboom', 30, false, true);
     },
 
     addAliens: function(){
@@ -231,9 +311,8 @@ game.time.advancedTiming = true;
     },
 
     render: function() {
-if (game.global.level == 7)       
-    text.text = leftWeapon.destroyed + "/" + rightWeapon.destroyed;
-textb.text = game.time.fps;
+//if (game.global.level == 7)
+//textb.text = game.time.fps;
 
     },
 

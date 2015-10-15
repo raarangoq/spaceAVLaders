@@ -16,7 +16,7 @@ function addBullets(){
     bullets.timeBetweenFires = 500;
     bullets.bulletsForMachineGun = 0;
 
-    bullets.damage = 25;
+    bullets.damage = 50;
     bullets.speed = 400;
 
     bullets.arrow_sound = game.add.audio("arrow", 0.2);

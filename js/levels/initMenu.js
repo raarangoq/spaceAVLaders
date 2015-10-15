@@ -13,7 +13,7 @@ initMenu = {
 	update: function(){
 		if(keyboard.enterKey()){
 //			game.global.is_playing = true;
-			game.state.start('levels');
+			game.state.start('introVideo');
 		}
 
 

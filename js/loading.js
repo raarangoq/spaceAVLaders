@@ -42,7 +42,7 @@ text.fixedToCamera = true;
 
     game.load.spritesheet('player', 'assets/pics/player.png', 53, 50);
     
-    game.load.image('starfield', 'assets/pics/starfield.png');
+    game.load.image('bridge', 'assets/pics/bridge.png');
 
     
 
@@ -53,8 +53,16 @@ text.fixedToCamera = true;
     game.load.image('win', 'assets/pics/images/win.png');
 
 
+    game.load.image('sky', 'assets/pics/videos/sky.png');
+    game.load.spritesheet('link', 'assets/pics/videos/link.png', 148, 150);
+    game.load.spritesheet('linkfail', 'assets/pics/videos/linkfail.png', 145, 175);
+    game.load.image('cloud', 'assets/pics/videos/cloud.png');
+    game.load.image('dialog01', 'assets/pics/videos/dialog01.png');
+    game.load.image('dialog02', 'assets/pics/videos/dialog02.png');
+    game.load.image('dialog03', 'assets/pics/videos/dialog03.png');
 
-	game.load.audio('inicio', 'assets/sounds/inicio.mp3');
+
+	game.load.audio('start', 'assets/sounds/inicio.mp3');
     game.load.audio('levelA', 'assets/sounds/levelA.mp3');
     game.load.audio('levelB', 'assets/sounds/levelB.mp3');
     game.load.audio('final', 'assets/sounds/final.mp3');
