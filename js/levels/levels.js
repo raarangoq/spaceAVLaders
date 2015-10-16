@@ -339,20 +339,23 @@ game.time.advancedTiming = true;
     restart: function() {
         sound_backgroud.stop();
 
-        if (player.alive)
+        if (player.alive){
             game.global.level++;
+            if (game.global.level == 8){
+                game.global.level = 1;
+                game.global.lives = 3;
+            }
+        }
         else{
             game.global.level = 1;
             game.global.lives = 3;
             score = 0;
+            game.global.health = 100;
         }
 
         winState = false;
 
-        if (game.global.level == 8){
-            game.global.level = 1;
-            game.global.lives = 3;
-        }
+        
 
         game.state.start('levels');
 

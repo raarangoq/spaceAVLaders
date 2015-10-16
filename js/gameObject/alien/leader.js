@@ -24,7 +24,7 @@ function updateLeader(){
     if( game.physics.arcade.distanceToXY(this,this.x_target, this.y_target) < 5 ) 
         this.body.velocity.setTo(0,0);
 
-    if( game.time.time - this.lastFire > this.speedFiring ){
+    if( game.time.time - this.lastFire > this.speedFiring){
         enemyBullets.fireAlienBullet(this);
         this.lastFire = game.time.time;
     }
