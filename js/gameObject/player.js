@@ -8,11 +8,9 @@ function addPlayer(){
     game.physics.enable(player, Phaser.Physics.ARCADE);
 
     addBullets();
-    player.ability = "";
-    player.timeForUseItem = game.time.time;
-    player.timeToLoseItem = 10000;
 //    player.health = 100;
     player.munition = 15;
+    player.haveTorpedo = false;
 
     player.timeWithoutMunition = game.time.time;
     player.timeForNewMunition = 40000;
@@ -36,30 +34,57 @@ function addPlayer(){
 
     player.setWinState = setWinState;
 
+    addPlayerAnimations(player);
+}
+
+function addPlayerAnimations(player){
+    player.animations.add('move', [ 0, 1, 2, 3 ], 9, true);
+    player.animations.add('attack', [ 4, 3, 2], 9);
 }
 
 function updatePlayer(){
-    if (player.alive && !winState){
+    if (this.alive && !winState){
 
-        player.body.velocity.setTo(0, 0);
-
-        if (game.time.time - this.timeVelocityActivated < this.timeWithVelocity)
+        this.body.velocity.setTo(0, 0);
+        
+        if (game.time.time - this.timeVelocityActivated < this.timeWithVelocity){
             this.speed = 500;
-        else
+        }
+        else{
             this.speed = 200;
+            gui.changeAbility(false, "velocity");
+         }   
 
-
-        if ( keyboard.leftKey() && player.body.x>50)
-            player.body.velocity.x = -this.speed;
-        else if ( keyboard.rightKey() && player.body.x<730)
-            player.body.velocity.x = this.speed;
-
-        if ( keyboard.spaceKey() )
-            this.playerFiresBullet();
         
 
-        if ( !game.physics.arcade.isPaused && keyboard.gKey() )
-            this.activateAbility();
+        if ( keyboard.leftKey() && this.body.x>50){
+            this.body.velocity.x = -this.speed;
+        }
+        else if ( keyboard.rightKey() && this.body.x<730){
+            this.body.velocity.x = this.speed;
+        }
+
+        
+        if (game.time.now - bullets.bulletTime > 0){
+            if (this.body.velocity.x != 0){
+                this.animations.play('move');
+            }
+            else{
+                this.animations.stop('move');
+            }
+        }
+        
+        
+
+        if ( keyboard.spaceKey() ){
+            if ( this.haveTorpedo ){
+                torpedo = addTorpedo();
+                this.haveTorpedo = false;
+            }
+            else
+                this.playerFiresBullet();
+        }
+
 
         if ( this.munition <= 0 ) {
 texta.text = "Time for munition: " + 
@@ -82,13 +107,13 @@ function playerFiresBullet() {
     //  To avoid them being allowed to fire too fast we set a time limit
     if (game.time.now > bullets.bulletTime && this.munition > 0)
     {
-        
         bullets.fireBullet();
         this.munition--;
+        this.animations.play('attack');
 
         if ( this.munition <= 0 ){
             this.timeWithoutMunition = game.time.time;
-            this.timeForNewMunition = 10000 + (Math.random() * 20000);
+            this.timeForNewMunition = 5000 + (Math.random() * 5000);
         }
     }
 }
@@ -128,10 +153,6 @@ function playerTakeDamageBoss(){
 }
 
 function updateAbility(){
-    if ( game.time.time - this.timeForUseItem > this.timeToLoseItem ){
-        gui.changeAbility(false);
-        this.ability = "";
-    }
 
     if ( torpedo != null && torpedo.body != null && torpedo.body.y < -20 ){
         torpedo.destroy();
@@ -140,22 +161,20 @@ function updateAbility(){
 
 }
 
-function activateAbility(){
-    if( this.ability == "machineGun" ){
-        bullets.activateMachineGun();
-        gui.changeAbility(false);
-        this.ability = "";
+function activateAbility(type){
+    gui.upScore(50);
+    if (type == "munition"){
+        this.munition += 15;
     }
-    else if( this.ability == "torpedo" ){
-        torpedo = addTorpedo();
-        gui.changeAbility(false);
-        this.ability = "";
+    else if( type == "machineGun" ){
+        bullets.activateMachineGun();
+    }
+    else if( type == "torpedo" ){
+        this.haveTorpedo = true;
     }  
-    else if (this.ability == "velocity"){
+    else if ( type == "velocity"){
         this.activateVelocity();
-        gui.changeAbility(false);
-        this.ability = "";
-    }      
+    }   
 }
 
 function activateVelocity(){
@@ -166,8 +185,10 @@ function setWinState(){
     winState = true;
     timeOfWin = game.time.time;
 
-    if (game.global.level <= 6)
+    if (game.global.level <= 6){
         game.physics.arcade.moveToXY(this, 300, -100, 200);
+        this.animations.play('move');
+    }
     else{
         this.body.velocity.setTo(0, 0);
         link.body.position = this.body.position;

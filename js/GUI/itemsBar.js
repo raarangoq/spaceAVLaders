@@ -9,9 +9,9 @@ function itemsBar(){
 	this.itemImage = [];
 	this.itemImage['torpedo'] = game.add.sprite(80, 500, 'torpedo');
 	this.itemImage['torpedo'].visible = false;
-	this.itemImage['machineGun'] = game.add.sprite(80, 500, 'machineGun');
+	this.itemImage['machineGun'] = game.add.sprite(110, 500, 'machineGun');
 	this.itemImage['machineGun'].visible = false;
-	this.itemImage['velocity'] = game.add.sprite(80, 500, 'velocity');
+	this.itemImage['velocity'] = game.add.sprite(140, 500, 'velocity');
 	this.itemImage['velocity'].visible = false;
 
 	this.timeItem = game.add.text(80, 515, "", { font: '16px Arial', fill: '#fff' })
@@ -25,23 +25,13 @@ function itemsBar(){
 
 function updateItemsBar(){
 	this.munition.text = player.munition;
-
-	if( player.ability != "" )
-		this.timeItem.text = (player.timeToLoseItem - (game.time.time - player.timeForUseItem)) / 1000;
-	else 
-		this.timeItem.text = ""; 
 }
 
-function useItemsBarAbility(){
-	if (player.ability != '')
-		this.itemImage[player.ability].visible = false;
+function useItemsBarAbility(type){
+	this.itemImage[type].visible = false;
 }
 
-function setItemsBarAbility(){
+function setItemsBarAbility(type){
+	this.itemImage[type].visible = true;
 
-	if (player.ability != '')
-		this.itemImage[player.ability].visible = false;
-
-	if (items.type != 'munition')
-		this.itemImage[items.type].visible = true;
 }

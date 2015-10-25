@@ -19,10 +19,17 @@ function addBoss(){
     boss.addChild(rightWeapon);
 
     boss.health = 450;
+    boss.maxHealth = 450;
     boss.destroyed = false;
     boss.lastSpam = game.time.time;
     boss.timeToSpamChild = 5000;
 
+    boss.healthBar = game.add.sprite(100,  20, 'enemyBar');
+    boss.healthBar.width = 120;
+    boss.healthBar.visible = false;
+    boss.addChild(boss.healthBar);
+
+    boss.checkedStop = false;
 
     boss.hit_sound = game.add.audio('creature');
 
@@ -48,13 +55,12 @@ function addBossAnimations(boss){
     boss.play('move');
 }
 
-var checkedStop = false;
 function updateBoss(){
-    if (!checkedStop && game.physics.arcade.distanceToXY(this, 250, 0) < 5){
+    if (!boss.checkedStop && game.physics.arcade.distanceToXY(this, 250, 0) < 5){
         this.body.velocity.setTo(0, 0);
         this.animations.stop(null, true);
         this.animations.play('attack');
-        checkedStop = true;
+        boss.checkedStop = true;
     }
 
     if( game.time.time - this.lastFire > this.speedFiring ){
@@ -85,7 +91,7 @@ function updateBoss(){
     if (torpedo != null)
         game.physics.arcade.overlap(torpedo, this, this.damageBossByTorpedo, null, this);
 
-    if(tree.count > 18)
+    if(tree.count > 18 || (leftWeapon.destroyed && rightWeapon.destroyed))
         this.speedFiring = 750;
     else
         this.speedFiring = 1500;
@@ -97,6 +103,7 @@ function damageBoss(weapon, bullet){
         return;
 
     this.health -= bullets.damage;
+    this.healthBar.width = 120 * ( this.health / this.maxHealth);
     
     if(this.health <= 0)
         this.destroyBoss();
@@ -104,8 +111,10 @@ function damageBoss(weapon, bullet){
 
 function damageBossByTorpedo(torpedo, weapon){
     
-    if (leftWeapon.destroyed && rightWeapon.destroyed)
+    if (leftWeapon.destroyed && rightWeapon.destroyed){
         this.health -= torpedo.damage;
+        this.healthBar.width = 120 * ( this.health / this.maxHealth);
+    }
 
     if(this.health <= 0)
         this.destroyBoss();
@@ -116,10 +125,11 @@ function damageBossByTorpedo(torpedo, weapon){
 
 function destroyBoss(){
     //  Increase the score
-    gui.upScore(5000);
+    gui.upScore(300 + (50 * tree.count));
 
     boss.hit_sound.play();
     this.play('die');
+    this.healthBar.visible = false;
 
     this.destroyed = true;
     player.setWinState();

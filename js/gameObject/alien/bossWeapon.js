@@ -17,7 +17,12 @@ function addWeapon(x, y, side){
     weapon.body.setSize(20, 20, 40, 60);
 
 	weapon.health = 250;
+	weapon.maxHealth = 250;
 	weapon.destroyed = false;
+
+	weapon.healthBar = game.add.sprite(22, 30, 'enemyBar');
+    weapon.healthBar.width = 50;
+    weapon.addChild(weapon.healthBar);
 
 	weapon.destroyWeapon = destroyWeapon;
 	weapon.damageWeapon = damageWeapon;
@@ -58,6 +63,7 @@ function bossWeaponFiring(){
 
 function damageWeapon(weapon, bullet){
 	this.health -= bullets.damage;
+	this.healthBar.width = 50 * ( this.health / this.maxHealth);
 	bullet.kill();
 
 	if(this.health <= 0)
@@ -66,6 +72,7 @@ function damageWeapon(weapon, bullet){
 
 function damageWeaponByTorpedo(torpedo, weapon){
 	this.health -= torpedo.damage;
+	this.healthBar.width = 50 * ( this.health / this.maxHealth);
 	torpedo.destroy();
 	torpedo = null;
 
@@ -75,7 +82,7 @@ function damageWeaponByTorpedo(torpedo, weapon){
 
 function destroyWeapon(){
 	//  Increase the score
-	gui.upScore(1000);
+	gui.upScore(150);
 
 	boss.hit_sound.play();
 
@@ -85,8 +92,11 @@ function destroyWeapon(){
     explosion.play('kaboom', 30, false, true);
 
 	this.destroyed = true;
+	this.healthBar.visible = false;
 	this.play('die');
 
-	if (leftWeapon.destroyed && rightWeapon.destroyed)
+	if (leftWeapon.destroyed && rightWeapon.destroyed){
 		boss.speedFiring = 750;
+		boss.healthBar.visible = true;
+	}
 }

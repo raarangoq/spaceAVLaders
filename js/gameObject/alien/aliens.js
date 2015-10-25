@@ -14,10 +14,16 @@ function addAlien(x, y, i, type){
     alien.id = i;
 
     alien.health = 100;
+    alien.maxHealth = 100;
     alien.speed = 100;
 
     alien.x_target = 400;
     alien.y_target = 300;
+
+    if (alien.type == "leader" || alien.type == "mother"){
+        alien.healthBar = game.add.sprite(0, -15, 'enemyBar');
+        alien.addChild(alien.healthBar);
+    }
 
     alien.hit_sound = game.add.audio('rugido');
 
@@ -43,6 +49,9 @@ function setTarget(x, y){
 
 function alienTakeDamage(damage){
     this.health -= damage;
+    if (this.type == "leader" || this.type == "mother"){
+        this.healthBar.width = 32 * ( this.health / this.maxHealth);
+    }
 }
 
 

@@ -15,7 +15,7 @@ var enemyBullets;
 var weaponBullets;
 var bossBullets;
 
-var items;
+var items=null;
 var item_munition;
 var torpedo;
 
@@ -52,6 +52,7 @@ var playedA = false;
 var playedB = false;
 var playedC = false;
 var playedD = false;
+var playedE = false;
 
 levels = {
     create: function() {
@@ -65,7 +66,7 @@ levels = {
     graphics = game.add.graphics( 0, 0 );
     graphics.lineStyle(2, 0x000000, 1);
 
-//game.global.level = 5;
+//game.global.level = 7;
 
     this.addAliens();
     
@@ -79,13 +80,12 @@ levels = {
     spiderExplodes.forEach(this.setupExplosion, this);
 
 
-    items = addItem(400, 000, "torpedo");
+//    items = addItem(400, 000, "torpedo");
 
 if (game.global.level == 7){
     link = game.add.sprite(0, 0, 'linkfail');
     game.physics.enable(link, Phaser.Physics.ARCADE);
     link.animations.add('fly', [0, 1, 2, 3, 4, 5, 6, 7, 8], 10, true);
-    //link.scale.setTo()
     link.visible = false;
     scream_sound = game.add.audio('scream');
     boom_sound = game.add.audio('boom');
@@ -98,10 +98,7 @@ if (game.global.level == 7){
     endImage = game.add.sprite(0, 0, 'end');
     endImage.visible = false;
 
-    if(game.global.level < 5)
-        sound_backgroud = game.add.audio('levelA', 0.5, true);
-    else
-        sound_backgroud = game.add.audio('levelB', 0.5, true);
+    sound_backgroud = game.add.audio('levelB', 0.5, true);
     sound_backgroud.play();
 
 
@@ -172,7 +169,7 @@ game.time.advancedTiming = true;
             }
         }
         else{
-            sound_backgroud.stop();
+//            sound_backgroud.stop();
 
             var local_time = game.time.time - timeOfWin;
             if( local_time < 800){//wait
@@ -223,7 +220,11 @@ game.time.advancedTiming = true;
                     link.body.position.setTo(300, 200);
                     link.frame = 9;
                     scream_sound.stop();
-                    player.hit_sound.play();
+                    
+                    if (!playedE){
+                        player.hit_sound.play();
+                        playedE = true;
+                    }
                 }
             }
             else{
@@ -285,7 +286,6 @@ game.time.advancedTiming = true;
     },
 
     setAbility: function(item, player){
-        gui.upScore(3000);
         item.takeItem();
     },
 
@@ -347,14 +347,18 @@ game.time.advancedTiming = true;
             }
         }
         else{
-            game.global.level = 1;
+            //game.global.level = 1;
             game.global.lives = 3;
             score = 0;
             game.global.health = 100;
         }
 
         winState = false;
-
+        playedA = false;
+        playedB = false;
+        playedC = false;
+        playedD = false;
+        playedE = false;
         
 
         game.state.start('levels');

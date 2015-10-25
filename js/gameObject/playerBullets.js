@@ -43,12 +43,14 @@ function fireBullet(){
         this.bulletsForMachineGun--;
     }
 
-    if( this.bulletsForMachineGun <= 0 )
+    if( this.bulletsForMachineGun <= 0 ){
         this.timeBetweenFires = 1000;
+        gui.changeAbility(false, "machineGun");
+    }
 }
 
 function activateMachineGun(){
-    this.bulletsForMachineGun = 20;
+    this.bulletsForMachineGun = 10;
     this.timeBetweenFires = 300;
 }
 
@@ -65,7 +67,7 @@ bullets.torpedo_sound.play();
 
     torpedo.damage = 150;
 
-
+gui.changeAbility(false, "torpedo");
 
     return torpedo;
 }

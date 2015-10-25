@@ -4,6 +4,7 @@ function addLeader(x, y, i){
     var leader = addAlien(x, y, i, "leader");
     leader.firingTimer = 0;
     leader.health = 250;
+    leader.maxHealth = 250;
 
     leader.lastFire = game.time.time;
     leader.speedFiring = 1000;
@@ -37,7 +38,7 @@ function updateLeader(){
 
 function destroyLeader(){
 	//  Increase the score
-	gui.upScore(100);
+	gui.upScore(100 + (50 * tree.count));
     this.hit_sound.play();
     player.setWinState();
 

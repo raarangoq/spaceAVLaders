@@ -27,15 +27,10 @@ function takeItem(){
 
     this.sound.play();
 
-    if (this.type == "munition"){
-        player.munition += 15;
-        this.type = "";
-    }
-    else{
-        gui.changeAbility(true);
-        player.ability = this.type;
-        player.timeForUseItem = game.time.time;
-    }
+    if (this.type == "velocity" || this.type == "machineGun" || this.type == "torpedo")
+        gui.changeAbility(true, this.type);
+
+    player.activateAbility(this.type);
 	
 	this.destroy();
 }

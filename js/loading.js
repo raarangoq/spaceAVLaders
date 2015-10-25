@@ -33,6 +33,7 @@ text.fixedToCamera = true;
     game.load.spritesheet('mother', 'assets/pics/enemys/mother.png', 32, 32);
     game.load.spritesheet('worm', 'assets/pics/enemys/worm.png', 32, 32);
     game.load.spritesheet('spiderDie', 'assets/pics/enemys/spiderDie.png', 128, 128);
+    game.load.image('enemyBar', 'assets/pics/enemys/enemyBar.png');
 
     game.load.spritesheet('leftWeapon', 'assets/pics/enemys/leftWeapon.png', 98, 111);
     game.load.spritesheet('rightWeapon', 'assets/pics/enemys/rightWeapon.png', 98, 111);
@@ -61,9 +62,6 @@ text.fixedToCamera = true;
     game.load.image('dialog02', 'assets/pics/videos/dialog02.png');
     game.load.image('dialog03', 'assets/pics/videos/dialog03.png');
 
-
-	game.load.audio('start', 'assets/sounds/inicio.mp3');
-    game.load.audio('levelA', 'assets/sounds/levelA.mp3');
     game.load.audio('levelB', 'assets/sounds/levelB.mp3');
     game.load.audio('final', 'assets/sounds/final.mp3');
 

@@ -48,7 +48,7 @@ intro_video = {
 		time = game.time.time;
 		game.physics.arcade.moveToXY(link, 550, 350, 350);
 
-		music = game.add.sound('start', 1, true);
+		music = game.add.sound('levelB', 0.5, true);
 		music.play();
 
 //text = game.add.text(20, 540, link.body.x, { fontSize: '28px', fill: '#000'});
@@ -90,13 +90,9 @@ intro_video = {
 			dialog03.visible = false;
 			game.physics.arcade.moveToXY(link, 1200, 1000, 300);
 		} 
-		//else{
-		//	this.playGame();
-		//}
 	},
 
 	playGame: function(){
-		//game.global.is_playing = true;
 		music.destroy();
 		game.state.start('levels');
 	}, 
