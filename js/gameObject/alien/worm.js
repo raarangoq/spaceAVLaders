@@ -38,7 +38,7 @@ function destroyWorm(){
 	}
 	tree.reorderTree();
 
-    if (items.body == null)
+    if (items != null && items.body == null)
         if ( Math.random() <= 0.1)
             items = addItem(this.body.x, this.body.y, "torpedo");
         else if (Math.random() <= 0.1)

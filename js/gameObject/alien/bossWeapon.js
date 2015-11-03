@@ -73,7 +73,14 @@ function damageWeapon(weapon, bullet){
 function damageWeaponByTorpedo(torpedo, weapon){
 	this.health -= torpedo.damage;
 	this.healthBar.width = 50 * ( this.health / this.maxHealth);
-	torpedo.destroy();
+	
+
+	//  And create an explosion :)
+    var explosion = explosions.getFirstExists(false);
+    explosion.reset(torpedo.body.x, torpedo.body.y);
+    explosion.play('kaboom', 30, false, true);
+
+    torpedo.destroy();
 	torpedo = null;
 
 	if(this.health <= 0)

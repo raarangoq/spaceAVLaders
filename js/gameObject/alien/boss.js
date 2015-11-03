@@ -11,7 +11,7 @@ function addBoss(){
 
     boss.firingTimer = 0;
     boss.lastFire = game.time.time;
-    boss.speedFiring = 1500;
+    boss.speedFiring = 3000;
 
     leftWeapon = addWeapon(-15, 33, 'left');
     boss.addChild(leftWeapon);
@@ -91,10 +91,12 @@ function updateBoss(){
     if (torpedo != null)
         game.physics.arcade.overlap(torpedo, this, this.damageBossByTorpedo, null, this);
 
-    if(tree.count > 18 || (leftWeapon.destroyed && rightWeapon.destroyed))
-        this.speedFiring = 750;
+    if(tree.count > 18 || (leftWeapon.destroyed && rightWeapon.destroyed)){
+        this.speedFiring = 1000;
+        this.timeToSpamChild = 2500;
+    }
     else
-        this.speedFiring = 1500;
+        this.speedFiring = 3000;
 }
 
 function damageBoss(weapon, bullet){
@@ -115,6 +117,11 @@ function damageBossByTorpedo(torpedo, weapon){
         this.health -= torpedo.damage;
         this.healthBar.width = 120 * ( this.health / this.maxHealth);
     }
+
+    //  And create an explosion :)
+    var explosion = explosions.getFirstExists(false);
+    explosion.reset(torpedo.body.x, torpedo.body.y);
+    explosion.play('kaboom', 30, false, true);
 
     if(this.health <= 0)
         this.destroyBoss();

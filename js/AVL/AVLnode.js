@@ -87,7 +87,14 @@ function setAlienToDestroy(alien, bullet){
 function setAlienToDestroyWithTorpedo(alien, torpedo){	
 
 	alien.alienTakeDamage(torpedo.damage);
-	torpedo.destroy();
+	
+
+	//  And create an explosion :)
+    var explosion = explosions.getFirstExists(false);
+    explosion.reset(torpedo.body.x, torpedo.body.y);
+    explosion.play('kaboom', 30, false, true);
+
+    torpedo.destroy();
 	torpedo = null;
 
 	if(alien.health <= 0)

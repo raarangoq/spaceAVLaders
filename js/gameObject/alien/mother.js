@@ -14,9 +14,9 @@ function addMother(x, y, i){
     return mother;
 }
 
-function addMotherAnimations(worm){
-    worm.animations.add('fly', [ 0, 1, 2, 3 ], 20, true);
-    worm.play('fly');
+function addMotherAnimations(mother){
+    mother.animations.add('fly', [ 0, 1, 2, 3 ], 20, true);
+    mother.play('fly');
 }
 
 function updateMother(){
@@ -41,7 +41,7 @@ function destroyMother(){
 	}
 	tree.reorderTree();
 
-    if (items.body == null)
+    if (items != null && items.body == null)
         if ( Math.random() <= 0.1)
             items = addItem(this.body.x, this.body.y, "torpedo");
         else if (Math.random() <= 0.1)
