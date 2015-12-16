@@ -1,8 +1,9 @@
 
 function addScore(){
 	//  The score
-    scoreString = 'Score : ';
-    scoreText = game.add.text(10, 10, scoreString + score, { font: '34px Arial', fill: '#fff' });
+    scoreString = 'Puntaje : ';
+    scoreText = game.add.text(10, 10, scoreString + score, 
+    	{ font: "34pt ferney", fill: '#fff', stroke: '#000000', strokeThickness: 6 });
 
     scoreText.upScore = upScore;
 

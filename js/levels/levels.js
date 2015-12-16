@@ -104,7 +104,8 @@ if (game.global.level == 7){
 
 
 //text = game.add.text(20, 540, 'Cargando...', { fontSize: '16px', fill: '#ffffff'});
-texta = game.add.text(20, 400, 'Cargando...', { fontSize: '16px', fill: '#ffffff'});
+texta = game.add.text(20, 400, 'Cargando...', 
+    { font: "16pt ferney", fill: '#fff', stroke: '#000000', strokeThickness: 3 });
 //textb = game.add.text(20, 200, 'Cargando...', { fontSize: '16px', fill: '#ffffff'});
 
 

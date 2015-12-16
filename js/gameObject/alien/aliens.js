@@ -5,7 +5,8 @@ function addAlien(x, y, i, type){
     alien = game.add.sprite(x, y, type);
     game.physics.enable(alien, Phaser.Physics.ARCADE);
 
-    var textId = game.add.text(10, -10, i, { fontSize: '14px', fill: '#ffffff'});
+    var textId = game.add.text(10, -10, i, 
+        { font: "14pt ferney", fill: '#fff', stroke: '#000000', strokeThickness: 3 });
     var child = alien.addChild(textId);
     game.physics.enable(child, Phaser.Physics.ARCADE);
 

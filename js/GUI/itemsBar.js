@@ -4,7 +4,8 @@ function itemsBar(){
 	this.itemsBar = game.add.sprite(20, 495, 'healthBar');
 	
 	this.munitionImage = game.add.sprite(30, 500, "arrowItem");
-	this.munition = game.add.text(50, 515, player.munition, { font: '16px Arial', fill: '#fff' });
+	this.munition = game.add.text(50, 515, player.munition, 
+		{ font: "16pt ferney", fill: '#fff', stroke: '#000000', strokeThickness: 3 });
 
 	this.itemImage = [];
 	this.itemImage['torpedo'] = game.add.sprite(80, 500, 'torpedo');
@@ -14,7 +15,7 @@ function itemsBar(){
 	this.itemImage['velocity'] = game.add.sprite(140, 500, 'velocity');
 	this.itemImage['velocity'].visible = false;
 
-	this.timeItem = game.add.text(80, 515, "", { font: '16px Arial', fill: '#fff' })
+//	this.timeItem = game.add.text(80, 515, "", { font: '16px Arial', fill: '#fff' })
 
 
 	this.updateItemsBar = updateItemsBar;
