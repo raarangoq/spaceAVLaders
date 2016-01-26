@@ -2,7 +2,8 @@
 function GUI(){
 
 	// Objetos y Atributos
-	
+	// Pause
+	this.pause_menu = addPause();
 	
 
 	// Vidas
@@ -10,8 +11,7 @@ function GUI(){
 	this.items_bar = new itemsBar();
 	addScore();
 
-	// Pause
-	this.pause_menu = addPause();
+	
 
 	// Metodos
 	
