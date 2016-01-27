@@ -241,7 +241,7 @@ function insertToTree(alien, t){
 function reorderTree(){
 	if(this.root != null){		
 		if(this.root.alien.body.y < 30 * this.root.heightNode)
-			this.root.y_node += 30 * this.root.heightNode;
+			this.root.y_node = 30 * this.root.heightNode;
 
 		this.root.reorderNode(this.root.x_node, this.root.y_node, this.root.heightNode);
 	}

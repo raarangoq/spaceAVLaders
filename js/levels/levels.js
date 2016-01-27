@@ -93,9 +93,15 @@ if (game.global.level == 7){
 
     winImage = game.add.sprite(0, 0, 'win');
     winImage.visible = false;
+
     loseImage = game.add.sprite(0, 0, 'lose');
     loseImage.visible = false;
     endImage = game.add.sprite(0, 0, 'end');
+    var text = game.add.text(400, 300, 'Ganaste\nHaz acabado con todas las arañas en el puente.', 
+        { font: "24pt ferney", fill: '#fff', stroke: '#000000', strokeThickness: 3, 
+        wordWrap: true, wordWrapWidth: 600, align: 'center' });
+    text.anchor.setTo(0.5, 0.5);
+    endImage.addChild(text);
     endImage.visible = false;
 
     sound_backgroud = game.add.audio('levelB', 0.5, true);
@@ -166,8 +172,7 @@ game.time.advancedTiming = true;
         if( game.global.level != 7 ){
             if ( game.physics.arcade.distanceToXY(player, 300, -100) <= 50 ){
                 player.body.velocity.setTo(0, 0);
-                winImage.visible = true;
-            }
+                winImage.visible = true;            }
         }
         else{
 //            sound_backgroud.stop();

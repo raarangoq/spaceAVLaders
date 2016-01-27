@@ -58,8 +58,8 @@ function addBossAnimations(boss){
 function updateBoss(){
     if (!boss.checkedStop && game.physics.arcade.distanceToXY(this, 250, 0) < 5){
         this.body.velocity.setTo(0, 0);
-        this.animations.stop(null, true);
-        this.animations.play('attack');
+//        this.animations.stop(null, true);
+        this.play('attack');
         boss.checkedStop = true;
     }
 

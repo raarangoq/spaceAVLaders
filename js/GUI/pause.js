@@ -53,7 +53,6 @@ function showPausePage(page){
 }
 
 function pauseGame(){
-
 	if(game.time.now - this.pause_menu.timeLastPause > 500){
 		if(game.physics.arcade.isPaused){
 			this.pause_menu.visible = false;
