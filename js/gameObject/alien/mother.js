@@ -23,7 +23,7 @@ function updateMother(){
 	if( game.physics.arcade.distanceToXY(this,this.x_target, this.y_target) < 5 ) 
         this.body.velocity.setTo(0,0);
 
-    if( !game.physics.arcade.isPaused && lives>0 && game.time.time - this.lastSpam > this.timeToSpamChild ){
+    if( !game.physics.arcade.isPaused && game.global.lives>0 && game.time.time - this.lastSpam > this.timeToSpamChild ){
     	tree.createAlien(this.body.x, this.body.y + 20, "drone");
     	tree.reorderTree();
     	this.lastSpam = game.time.time;

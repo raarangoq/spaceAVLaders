@@ -81,7 +81,8 @@ function updateBoss(){
     	rightWeapon.updateBossWeapon();
 
 
-    if( !game.physics.arcade.isPaused && !this.destroyed && game.time.time - this.lastSpam > this.timeToSpamChild ){
+    if( !game.physics.arcade.isPaused && game.global.lives > 0 && 
+        !this.destroyed && game.time.time - this.lastSpam > this.timeToSpamChild ){
         tree.createAlien(this.body.x + 40, this.body.y + 130, "drone");
         tree.reorderTree();
         this.lastSpam = game.time.time;
