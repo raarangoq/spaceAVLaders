@@ -345,6 +345,12 @@ game.time.advancedTiming = true;
     restart: function() {
         sound_backgroud.stop();
 
+        if(ScormProcessGetValue("cmi.core.score.raw") < score / 10000){
+            ScormProcessSetValue("cmi.core.score.min", 0.0000);
+            ScormProcessSetValue("cmi.core.score.min", 100.0000);
+            ScormProcessSetValue("cmi.core.score.raw", score / 10000);
+        }
+
         if (player.alive){
             game.global.level++;
             if (game.global.level == 8){
