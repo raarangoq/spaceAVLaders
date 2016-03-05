@@ -6,11 +6,14 @@ function addPlayer(){
 	player = game.add.sprite(400, 500, 'player');
     player.anchor.setTo(0.5, 0.5);
     game.physics.enable(player, Phaser.Physics.ARCADE);
+    player.body.setSize(30, 31, 2, 2);
 
     addBullets();
 //    player.health = 100;
     player.munition = 15;
     player.haveTorpedo = false;
+
+    player.blood = player.addChild(addBlood());
 
     player.timeWithoutMunition = game.time.time;
     player.timeForNewMunition = 40000;
@@ -44,6 +47,8 @@ function addPlayerAnimations(player){
 
 function updatePlayer(){
     if (this.alive && !winState){
+
+        this.blood.update();
 
         this.body.velocity.setTo(0, 0);
         
@@ -136,19 +141,19 @@ function checkHealth(){
 
 function playerTakeDamage(){
     game.global.health -= enemyBullets.damage;
-
+    this.blood.playBleed();
     this.checkHealth();
 }
 
 function playerTakeDamageWeapon(){
     game.global.health -= weaponBullets.damage;
-
+    this.blood.playBleed();
     this.checkHealth();
 }
 
 function playerTakeDamageBoss(){
     game.global.health -= bossBullets.damage;
-
+    this.blood.playBleed();
     this.checkHealth();
 }
 
