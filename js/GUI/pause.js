@@ -3,6 +3,11 @@ function addPause(){
 	var pause_menu = game.add.sprite(0, 0, 'blankpause');
 	pause_menu.fixedToCamera = true;
 
+	var text = game.add.text(530, 30, 'Usa <- -> para moverte entre páginas',
+		{ font: "14pt ferney", fill: '#fff', stroke: '#000000', strokeThickness: 3,
+		wordWrap: true, wordWrapWidth: 250});
+	pause_menu.addChild(text);
+
 	pause_menu.timeLastPause = game.time.now - 1500;
 
 	pause_menu.actualPage = 0;
