@@ -5,7 +5,7 @@ function addPausePage0(){
 	page.anchor.setTo(0.5, 0.5);
 
 	var text = game.add.text(0, 80, 
-		'Acaba con la araña Lider usando tu arco y flecha para ir al siguiente nivel.',
+		'Acaba con la araña Líder usando tu arco y flecha para ir al siguiente nivel.',
 		{ font: "16pt ferney", fill: '#fff', stroke: '#000000', strokeThickness: 3,
 		wordWrap: true, wordWrapWidth: 600, align: 'center'});
 	text.anchor.setTo(0.5, 0.5);
@@ -38,7 +38,7 @@ function addPausePage2(){
 	page.animations.add('walk', [0, 1, 2, 3], 8, true);
     page.play('walk');
 	var text = game.add.text(50, 0, 
-		'Sangano: No dispara ningún proyectil, pero son numerosos.', 
+		'Zángano: No dispara ningún proyectil, pero son numerosos.', 
 		{ font: "16pt ferney", fill: '#fff', stroke: '#000000', strokeThickness: 3,
 		wordWrap: true, wordWrapWidth: 600});
 	page.addChild(text);
@@ -48,7 +48,7 @@ function addPausePage2(){
     image.play('walk');
 	page.addChild(image);
 	text = game.add.text(50, 70, 
-		'Lider: Rapidamente dispara balas de energia que generan daño leve, mata a esta araña para ir al siguiente nivel.', 
+		'Líder: Rápidamente dispara balas de energía que generan daño leve, mata a esta araña para ir al siguiente nivel.', 
 		{ font: "16pt ferney", fill: '#fff', stroke: '#000000', strokeThickness: 3, 
 		wordWrap: true, wordWrapWidth: 600});
 	page.addChild(text);
@@ -58,7 +58,7 @@ function addPausePage2(){
     image.play('walk');
 	page.addChild(image);
 	text = game.add.text(50, 180, 
-		'Araña madre: Cada cierto tiempo da a luz a un Sangano, si hay muchos de estos, el Lider disparará mas rápido y hará mas daño.', 
+		'Araña madre: Cada cierto tiempo da a luz a un zángano, si hay muchos de estos zánganos, el Líder disparará mas rápido y hará mas daño.', 
 		{ font: "16pt ferney", fill: '#fff', stroke: '#000000', strokeThickness: 3,
 		wordWrap: true, wordWrapWidth: 600});
 	page.addChild(text);
@@ -68,7 +68,7 @@ function addPausePage2(){
     image.play('walk');
 	page.addChild(image);
 	text = game.add.text(50, 290, 
-		'Araña gusano: Cuando lo matas, se convierte en tres sanganos.', 
+		'Araña gusano: Cuando lo matas, se convierte en tres zánganos.', 
 		{ font: "16pt ferney", fill: '#fff', stroke: '#000000', strokeThickness: 3,
 		wordWrap: true, wordWrapWidth: 600});
 	page.addChild(text);
@@ -96,7 +96,7 @@ function addPausePage3(){
 	var image = game.add.sprite(0, 100, 'machineGun');
 	page.addChild(image);
 	text = game.add.text(50, 100, 
-		'Fuego rápido: Mientras está activo, desparas mas rápido.', 
+		'Fuego rápido: Mientras está activo, disparas mas rápido.', 
 		{ font: "16pt ferney", fill: '#fff', stroke: '#000000', strokeThickness: 3, 
 		wordWrap: true, wordWrapWidth: 600});
 	page.addChild(text);
@@ -112,7 +112,7 @@ function addPausePage3(){
 	image = game.add.sprite(0, 300, 'heart');
 	page.addChild(image);
 	text = game.add.text(50, 300, 
-		'Vida: Dispones de tres vidas, cuando las pierdes, mueres.', 
+		'Vida: Dispones de tres vidas.', 
 		{ font: "16pt ferney", fill: '#fff', stroke: '#000000', strokeThickness: 3,
 		wordWrap: true, wordWrapWidth: 600});
 	page.addChild(text);
@@ -126,7 +126,8 @@ function addPausePage4(){
 	page.animations.add('walk', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 8, true);
     page.play('walk');
 	var text = game.add.text(350, 0, 
-		'Rey: Araña reina, muy resistente, dispara fuertes proyectiles y genera sanganos cada cierto tiempo.\nDebes destruir sus armas para poder atacarla directamente.', 
+		'Rey: Araña reina, muy resistente, dispara fuertes proyectiles y genera zánganos cada cierto tiempo.' +
+		 '\nDebes destruir sus armas para poder atacarla directamente.', 
 		{ font: "16pt ferney", fill: '#fff', stroke: '#000000', strokeThickness: 3,
 		wordWrap: true, wordWrapWidth: 400});
 	page.addChild(text);
