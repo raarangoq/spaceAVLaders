@@ -33,7 +33,7 @@ function addPause(){
 
 
 function pauseMenuUpdate(){
-	if(!game.physics.arcade.isPaused)
+	if(!game.physics.arcade.isPaused || winState)
 		return;
 
 	if(game.time.now - this.lastChange > 500){

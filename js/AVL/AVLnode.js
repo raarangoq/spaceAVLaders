@@ -93,6 +93,7 @@ function setAlienToDestroyWithTorpedo(alien, torpedo){
     var explosion = explosions.getFirstExists(false);
     explosion.reset(torpedo.body.x, torpedo.body.y);
     explosion.play('kaboom', 30, false, true);
+    boom_sound.play();
 
     torpedo.destroy();
 	torpedo = null;

@@ -16,8 +16,8 @@ function addWeapon(x, y, side){
     weapon.body.colliderWorldBounds = true;
     weapon.body.setSize(20, 20, 40, 60);
 
-	weapon.health = 250;
-	weapon.maxHealth = 250;
+	weapon.health = 500;
+	weapon.maxHealth = 500;
 	weapon.destroyed = false;
 
 	weapon.healthBar = game.add.sprite(22, 30, 'enemyBar');

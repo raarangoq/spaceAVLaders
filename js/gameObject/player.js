@@ -47,7 +47,6 @@ function addPlayerAnimations(player){
 
 function updatePlayer(){
     if (this.alive && !winState){
-
         this.blood.update();
 
         this.body.velocity.setTo(0, 0);
@@ -92,8 +91,8 @@ function updatePlayer(){
 
 
         if ( this.munition <= 0 ) {
-texta.text = "Time for munition: " + 
-                Math.round((  this.timeForNewMunition - (game.time.time - this.timeWithoutMunition)  ) / 1000);
+            texta.text = "Time for munition: " + 
+            Math.round((  this.timeForNewMunition - (game.time.time - this.timeWithoutMunition)  ) / 1000);
 
             if (game.time.time - this.timeWithoutMunition > this.timeForNewMunition){
                 this.munition = 1;

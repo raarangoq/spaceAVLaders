@@ -14,7 +14,7 @@ function addAliensBullets(){
     enemyBullets.setAll('outOfBoundsKill', true);
     enemyBullets.setAll('checkWorldBounds', true);
 
-    enemyBullets.damage = 30;
+    enemyBullets.damage = 40;
 
     enemyBullets.fireAlienBullet = fireAlienBullet;
 }
@@ -29,9 +29,9 @@ function fireAlienBullet(alien){
         // And fire the bullet from this enemy
         enemyBullet.reset(alien.body.x + 10, alien.body.y + 32);
         if (tree.count > 18)
-            game.physics.arcade.moveToObject(enemyBullet, player, 300);
+            game.physics.arcade.moveToObject(enemyBullet, player, 400);
         else
-            game.physics.arcade.moveToObject(enemyBullet, player, 120);
+            game.physics.arcade.moveToObject(enemyBullet, player, 200);
     }
 }
 
@@ -47,7 +47,7 @@ function addBossWeaponBullets(){
     weaponBullets.setAll('outOfBoundsKill', true);
     weaponBullets.setAll('checkWorldBounds', true);
 
-    weaponBullets.damage = 50;
+    weaponBullets.damage = 80;
 
     weaponBullets.fireWeaponBullet = fireAlienBullet;
 }
@@ -65,7 +65,7 @@ function addBossBullets(){
     bossBullets.setAll('outOfBoundsKill', true);
     bossBullets.setAll('checkWorldBounds', true);
 
-    bossBullets.damage = 90;
+    bossBullets.damage = 100;
 
     bossBullets.fireBossBullet = fireBossBullet;
 }
@@ -79,8 +79,8 @@ function fireBossBullet(){
         // And fire the bullet from this enemy
         enemyBullet.reset(boss.body.x + 50, boss.body.y + 130);
         if (tree.count > 18)
-            game.physics.arcade.moveToObject(enemyBullet, player, 300);
+            game.physics.arcade.moveToObject(enemyBullet, player, 400);
         else
-            game.physics.arcade.moveToObject(enemyBullet, player, 120);
+            game.physics.arcade.moveToObject(enemyBullet, player, 200);
     }
 }

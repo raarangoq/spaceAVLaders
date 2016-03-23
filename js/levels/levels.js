@@ -88,8 +88,8 @@ if (game.global.level == 7){
     link.animations.add('fly', [0, 1, 2, 3, 4, 5, 6, 7, 8], 10, true);
     link.visible = false;
     scream_sound = game.add.audio('scream');
-    boom_sound = game.add.audio('boom');
 }
+    boom_sound = game.add.audio('boom');
 
     winImage = game.add.sprite(0, 0, 'win');
     winImage.visible = false;
@@ -178,9 +178,9 @@ game.time.advancedTiming = true;
 //            sound_backgroud.stop();
 
             var local_time = game.time.time - timeOfWin;
-            if( local_time < 800){//wait
+            if( local_time < 3900){//wait
             }
-            else if (local_time < 1000){
+            else if (local_time < 4000){
                 if(!playedA){
                     this.addExplosion(boss.body.x + 50, boss.body.y);
                     this.addExplosion(boss.body.x + 50, boss.body.y + 100);
@@ -188,7 +188,7 @@ game.time.advancedTiming = true;
                     boom_sound.play();
                 }
             }
-            else if (local_time < 1200){
+            else if (local_time < 4200){
                 if(!playedB){
                     this.addExplosion(boss.body.x + 50, boss.body.y + 200);
                     this.addExplosion(boss.body.x + 50, boss.body.y + 300);
@@ -196,7 +196,7 @@ game.time.advancedTiming = true;
                     boom_sound.play();
                 }
             }
-            else if (local_time < 1400){
+            else if (local_time < 4400){
                 if(!playedC){
                     this.addExplosion(boss.body.x + 50, boss.body.y + 400);
                     this.addExplosion(boss.body.x + 50, boss.body.y + 450);
@@ -204,7 +204,7 @@ game.time.advancedTiming = true;
                     boom_sound.play();
                 }
             }
-            else if (local_time < 1600){
+            else if (local_time < 4600){
                 if(!playedD){
                     playedD = true;
 
@@ -221,9 +221,10 @@ game.time.advancedTiming = true;
                     boom_sound.play();
                 }
             }
-            else if (local_time < 8000){
+            else if (local_time < 10000){
                 if (link.scale.x == 2){
-                    link.body.position.setTo(300, 200);
+                    link.body.position.setTo(300, 200);+
+                    link.animations.stop();
                     link.frame = 9;
                     scream_sound.stop();
                     
