@@ -13,9 +13,9 @@ function addBoss(){
     boss.lastFire = game.time.time;
     boss.speedFiring = 3000;
 
-    leftWeapon = addWeapon(-15, 33, 'left');
+    leftWeapon = addWeapon(-20, 33, 'left');
     boss.addChild(leftWeapon);
-    rightWeapon = addWeapon(247, 34, 'right');
+    rightWeapon = addWeapon(240, 34, 'right');
     boss.addChild(rightWeapon);
 
     boss.health = 450;
@@ -49,8 +49,8 @@ function addBoss(){
 
 function addBossAnimations(boss){
     boss.animations.add('move', [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ], 20, true);
-    boss.animations.add('attack', [ 10, 11, 12, 13, 14, 15], 20, true);
-    boss.animations.add('die', [ 17, 18, 19, 20, 21 ], 10);
+    boss.animations.add('attack', [9, 10, 11, 12, 13, 14], 20, true);
+    boss.animations.add('die', [16, 17, 18, 19], 10);
 
     boss.play('move');
 }
@@ -137,6 +137,8 @@ function destroyBoss(){
 
     boss.hit_sound.play();
     this.play('die');
+    this.children[0].visible = false;
+    this.children[1].visible = false;
     this.healthBar.visible = false;
 
     this.destroyed = true;

@@ -332,7 +332,7 @@ game.time.advancedTiming = true;
 
     render: function() {
 //game.debug.body(bullets.children[0]);
-//textb.text = game.time.fps;
+//textb.text = boss.frame;
 
     },
 

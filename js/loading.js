@@ -34,7 +34,7 @@ loading = {
 
     game.load.spritesheet('leftWeapon', 'assets/pics/enemys/leftWeapon.png', 98, 111);
     game.load.spritesheet('rightWeapon', 'assets/pics/enemys/rightWeapon.png', 98, 111);
-    game.load.spritesheet('boss', 'assets/pics/enemys/boss.png', 332, 191);
+    game.load.spritesheet('boss', 'assets/pics/enemys/boss.png', 333, 191);
 
     game.load.spritesheet('kaboom', 'assets/pics/explode.png', 128, 128);
 
