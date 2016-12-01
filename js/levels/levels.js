@@ -69,7 +69,7 @@ levels = {
 //game.global.level = 7;
 
     this.addAliens();
-    
+
     //  An explosion pool
     explosions = game.add.group();
     explosions.createMultiple(10, 'kaboom');
@@ -97,8 +97,8 @@ if (game.global.level == 7){
     loseImage = game.add.sprite(0, 0, 'lose');
     loseImage.visible = false;
     endImage = game.add.sprite(0, 0, 'end');
-    var text = game.add.text(400, 300, 'Ganaste\nHaz acabado con todas las arañas en el puente.', 
-        { font: "24pt ferney", fill: '#fff', stroke: '#000000', strokeThickness: 3, 
+    var text = game.add.text(400, 300, 'Ganaste\nHaz acabado con todas las arañas en el puente.',
+        { font: "24pt ferney", fill: '#fff', stroke: '#000000', strokeThickness: 3,
         wordWrap: true, wordWrapWidth: 600, align: 'center' });
     text.anchor.setTo(0.5, 0.5);
     endImage.addChild(text);
@@ -110,12 +110,12 @@ if (game.global.level == 7){
 
 
 //text = game.add.text(20, 540, 'Cargando...', { fontSize: '16px', fill: '#ffffff'});
-texta = game.add.text(20, 400, 'Cargando...', 
+texta = game.add.text(20, 400, 'Cargando...',
     { font: "16pt ferney", fill: '#fff', stroke: '#000000', strokeThickness: 3 });
 //textb = game.add.text(20, 200, 'Cargando...', { fontSize: '16px', fill: '#ffffff'});
 
 
-  
+
 
 gui = new GUI();
 
@@ -227,7 +227,7 @@ game.time.advancedTiming = true;
                     link.animations.stop();
                     link.frame = 9;
                     scream_sound.stop();
-                    
+
                     if (!playedE){
                         player.hit_sound.play();
                         playedE = true;
@@ -239,7 +239,7 @@ game.time.advancedTiming = true;
             }
         }
 
-        
+
     },
 
     addExplosion: function(x, y){
@@ -297,7 +297,7 @@ game.time.advancedTiming = true;
     },
 
     enemyHitsPlayer: function(player, bullet) {
-        
+
         bullet.kill();
         player.playerTakeDamage();
 
@@ -346,7 +346,7 @@ game.time.advancedTiming = true;
     restart: function() {
         sound_backgroud.stop();
 
-        
+
 
         if (player.alive){
             game.global.level++;
@@ -354,11 +354,12 @@ game.time.advancedTiming = true;
                 game.global.level = 1;
                 game.global.lives = 3;
 
-                /*if(ScormProcessGetValue("cmi.core.score.raw") < score){
-                    ScormProcessSetValue("cmi.core.score.min", 0.0000);
-                    ScormProcessSetValue("cmi.core.score.min", 100.0000);
-                    ScormProcessSetValue("cmi.core.score.raw", score);
-                }*/
+                ScormProcessSetValue("cmi.core.score.min", 0.0000);
+                ScormProcessSetValue("cmi.core.score.max", 100.0000);
+                ScormProcessSetValue("cmi.core.score.raw", 100);
+                if( ScormProcessGetValue("cmi.comments") < gui.scoreText.score )
+                    ScormProcessSetValue("cmi.comments", gui.scoreText.score);
+                }
             }
         }
         else{
@@ -374,7 +375,7 @@ game.time.advancedTiming = true;
         playedC = false;
         playedD = false;
         playedE = false;
-        
+
 
         game.state.start('levels');
 
